@@ -11,12 +11,12 @@
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>Utilities</artifactId>
+            <artifactId>Dao</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>Dao</artifactId>
+            <artifactId>Utilities</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>

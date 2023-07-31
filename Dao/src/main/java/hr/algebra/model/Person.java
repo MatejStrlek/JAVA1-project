@@ -4,6 +4,8 @@
  */
 package hr.algebra.model;
 
+import hr.algebra.enums.Role;
+
 /**
  *
  * @author matej.galic

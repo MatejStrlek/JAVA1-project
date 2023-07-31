@@ -4,6 +4,7 @@
  */
 package hr.algebra.dal;
 
+import hr.algebra.model.AppUser;
 import hr.algebra.model.Person;
 import hr.algebra.model.Movie;
 import java.util.List;
@@ -29,5 +30,8 @@ public interface Repository {
     void deleteMovie(int id) throws Exception;
     Optional<Movie> selectMovie(int id) throws Exception;
     List<Movie> selectMovies() throws Exception;
+    
+    int createUser(AppUser appUser) throws Exception;
+    Optional<AppUser> selectUser(String username, String password) throws Exception;
     
 }

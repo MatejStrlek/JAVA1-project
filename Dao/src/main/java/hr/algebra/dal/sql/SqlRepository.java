@@ -7,13 +7,13 @@ package hr.algebra.dal.sql;
 import hr.algebra.dal.Repository;
 import hr.algebra.model.Movie;
 import hr.algebra.model.Person;
-import hr.algebra.model.Role;
+import hr.algebra.enums.Role;
+import hr.algebra.enums.User;
+import hr.algebra.model.AppUser;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Types;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -33,6 +33,11 @@ public class SqlRepository implements Repository {
     private static final String ID_PERSON = "IDPerson";
     private static final String NAME = "Name";
     private static final String ROLE = "Role";
+    
+    private static final String ID_APP_USER = "IDAppUser";
+    private static final String USERNAME = "Username";
+    private static final String PASSWORD = "Password";
+    private static final String APP_ROLE = "Role";
 
     private static final String CREATE_PERSON = "{ CALL createPerson (?,?,?) }";
     private static final String UPDATE_PERSON = "{ CALL updatePerson (?,?,?) }";
@@ -46,6 +51,9 @@ public class SqlRepository implements Repository {
     private static final String DELETE_MOVIE = "{ CALL deleteMovie (?) }";
     private static final String SELECT_MOVIE = "{ CALL selectMovie (?) }";
     private static final String SELECT_MOVIES = "{ CALL selectMovies }";
+    
+    private static final String CREATE_USER = "{ CALL createUser (?,?,?,?) }";
+    private static final String SELECT_USER = "{ CALL selectUser (?,?) }";
 
     @Override
     public int createPerson(Person person) throws Exception {
@@ -322,4 +330,40 @@ public class SqlRepository implements Repository {
 
         return articles;
     }*/
+
+    @Override
+    public int createUser(AppUser appUser) throws Exception {
+        DataSource dataSource = DataSourceSingleton.getInstance();
+        try (Connection con = dataSource.getConnection(); CallableStatement stmt = con.prepareCall(CREATE_USER);) {
+            stmt.setString(USERNAME, appUser.getUsername());
+            stmt.setString(PASSWORD, appUser.getPassword());
+            stmt.setString(APP_ROLE, appUser.getAppUserRole().name());
+
+            stmt.registerOutParameter(ID_APP_USER, Types.INTEGER);
+            stmt.executeUpdate();
+
+            return stmt.getInt(ID_APP_USER);
+        }
+    }
+
+    @Override
+    public Optional<AppUser> selectUser(String username, String password) throws Exception {
+        DataSource dataSource = DataSourceSingleton.getInstance();
+        try (Connection con = dataSource.getConnection(); CallableStatement stmt = con.prepareCall(SELECT_USER);) {
+
+            stmt.setString(USERNAME, username);
+            stmt.setString(PASSWORD, password);
+
+            try (ResultSet rs = stmt.executeQuery();) {
+                if (rs.next()) {
+                    return Optional.of(new AppUser(
+                            rs.getInt(ID_APP_USER),                           
+                            User.fromString(rs.getString(APP_ROLE))
+                    ));
+                }
+            }
+
+        }
+        return Optional.empty();
+    }
 }

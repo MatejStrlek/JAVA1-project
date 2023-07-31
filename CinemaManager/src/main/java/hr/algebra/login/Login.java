@@ -4,16 +4,34 @@
  */
 package hr.algebra.login;
 
+import hr.algebra.dal.Repository;
+import hr.algebra.dal.RepositoryFactory;
+import hr.algebra.main.CinemaManager;
+import hr.algebra.model.AppUser;
+import hr.algebra.utilities.MessageUtils;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFrame;
+import javax.swing.text.JTextComponent;
+
 /**
  *
- * @author user
+ * @author matej.galic
  */
 public class Login extends javax.swing.JFrame {
+
+    private static final String LOGIN = "Login";
 
     /**
      * Creates new form Login
      */
     public Login() {
+        setTitle(LOGIN);
+        setDefaultCloseOperation(Login.EXIT_ON_CLOSE);
+
         initComponents();
     }
 
@@ -37,6 +55,11 @@ public class Login extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(400, 330));
+        addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                formComponentShown(evt);
+            }
+        });
 
         jlUsername.setText("Username");
 
@@ -46,6 +69,11 @@ public class Login extends javax.swing.JFrame {
         jLabel1.setText("Cinema App");
 
         btnLogin.setText("Login");
+        btnLogin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLoginActionPerformed(evt);
+            }
+        });
 
         jLabel2.setText("You don't have acc?");
 
@@ -101,6 +129,15 @@ public class Login extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
+        checkCredentials();
+        clearFields();
+    }//GEN-LAST:event_btnLoginActionPerformed
+
+    private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
+        init();
+    }//GEN-LAST:event_formComponentShown
+
     /**
      * @param args the command line arguments
      */
@@ -146,4 +183,50 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JPasswordField pfPassword;
     private javax.swing.JTextField tfUsername;
     // End of variables declaration//GEN-END:variables
+
+    private List<JTextComponent> loginFormFields;
+
+    private Repository repository;
+
+    private void init() {
+        try {
+            initFields();
+            initRepository();
+        } catch (Exception e) {
+        }
+    }
+
+    private void initFields() {
+        loginFormFields = Arrays.asList(
+                tfUsername,
+                pfPassword
+        );
+    }
+
+    private void initRepository() {
+        repository = RepositoryFactory.getRepository();
+    }
+
+    private void clearFields() {
+        loginFormFields.forEach(l -> l.setText(""));
+    }
+
+    private void checkCredentials() {
+        String username = tfUsername.getText();
+        String password = new String(pfPassword.getPassword());
+
+        try {
+            Optional<AppUser> appUser = repository.selectUser(username, password);
+
+            if (appUser.isPresent()) {
+                final JFrame cinemaManager = new CinemaManager();
+                cinemaManager.setVisible(true);               
+            } else {
+                MessageUtils.showInformationMessage(LOGIN, "No user! Register!");
+            }
+
+        } catch (Exception ex) {
+            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }

@@ -2,25 +2,26 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package hr.algebra.model;
+package hr.algebra.enums;
 
 /**
  *
  * @author matej.galic
  */
-public enum Role {
-    ACTOR,
-    DIRECTOR;
-
-    public static Role fromString(String value) {
+public enum User {
+    DEFAULT,
+    ADMIN;
+    
+    public static User fromString(String value) {
         if (value != null) {
             switch (value.toUpperCase()) {
-                case "ACTOR":
-                    return ACTOR;
-                case "DIRECTOR":
-                    return DIRECTOR;
+                case "DEFAULT":
+                    return DEFAULT;
+                case "ADMIN":
+                    return ADMIN;
             }
         }
-        throw new IllegalArgumentException("Invalid Role: " + value);
+        throw new IllegalArgumentException("Invalid User: " + value);
     }
+    
 }
