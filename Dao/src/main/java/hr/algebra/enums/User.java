@@ -23,5 +23,5 @@ public enum User {
         }
         throw new IllegalArgumentException("Invalid User: " + value);
     }
-    
+
 }
