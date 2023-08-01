@@ -6,6 +6,8 @@ package hr.algebra.view;
 
 import hr.algebra.dal.Repository;
 import hr.algebra.dal.RepositoryFactory;
+import hr.algebra.dal.login.LoginCallBack;
+import hr.algebra.enums.User;
 import hr.algebra.main.CinemaManager;
 import hr.algebra.utilities.MessageUtils;
 import hr.algebra.model.AppUser;
@@ -29,7 +31,8 @@ public class LoginPanel extends javax.swing.JPanel {
     /**
      * Creates new form LoginPanel
      */
-    public LoginPanel() {
+    public LoginPanel(LoginCallBack loginCallBack) {
+        this.loginCallBack = loginCallBack;
         initComponents();
     }
 
@@ -151,6 +154,7 @@ public class LoginPanel extends javax.swing.JPanel {
     private List<JTextComponent> loginFormFields;
 
     private Repository repository;
+    private LoginCallBack loginCallBack;
 
     private void init() {
         try {
@@ -178,11 +182,17 @@ public class LoginPanel extends javax.swing.JPanel {
 
         try {
             Optional<AppUser> appUser = repository.selectUser(username, password);
-
-            if (appUser.isPresent()) {
-                MessageUtils.showInformationMessage(LOGIN, "success!");
-            } else {
-                MessageUtils.showInformationMessage(LOGIN, "No user! Register!");
+            Optional<User>optionalUserRole = appUser.map(AppUser::getAppUserRole);
+            
+            if (appUser.isPresent() && optionalUserRole.get() == User.DEFAULT) {
+                loginCallBack.onDefaultLogin();
+                MessageUtils.showInformationMessage(LOGIN, "Loged in " + username + " as " + optionalUserRole.get());
+            } else if(appUser.isPresent() && optionalUserRole.get() == User.ADMIN) {
+                loginCallBack.onAdminLogin();
+                MessageUtils.showInformationMessage(LOGIN, "Loged in " + username + " as " + optionalUserRole.get());
+            }
+            else {
+                MessageUtils.showInformationMessage(LOGIN, "No user! Maybe register!");
             }
 
         } catch (Exception ex) {

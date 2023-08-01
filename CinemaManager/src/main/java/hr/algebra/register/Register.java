@@ -22,7 +22,7 @@ import javax.swing.text.JTextComponent;
 public class Register extends javax.swing.JFrame {
 
     private static final String REGISTER = "Register";
-    
+
     /**
      * Creates new form Register
      */
@@ -173,7 +173,7 @@ public class Register extends javax.swing.JFrame {
     private List<JTextComponent> registerFormFields;
 
     private Repository repository;
-    
+
     private void init() {
         try {
             initFields();
@@ -197,23 +197,27 @@ public class Register extends javax.swing.JFrame {
 
     private void registerUser() {
 
-        String username = tfUsername.getText();
+        if (!validateFields()) {
+            return;
+        }
+
+        String username = tfUsername.getText().trim();
         String password = new String(pfPassword.getPassword());
-        User userRole = User.fromString((String)cbUserRole.getSelectedItem());      
-            
+        User userRole = User.fromString((String) cbUserRole.getSelectedItem());
+
         try {
-            AppUser appUser = new AppUser(username, password, userRole);           
+            AppUser appUser = new AppUser(username, password, userRole);
             int registerUser = repository.createUser(appUser);
-            
+
             if (registerUser > 0) {
                 MessageUtils.showInformationMessage(REGISTER, "You are registered now!");
-            }
-            else{
+                dispose();
+            } else {
                 MessageUtils.showErrorMessage(REGISTER, "Some Error!");
             }
         } catch (Exception ex) {
             Logger.getLogger(Register.class.getName()).log(Level.SEVERE, null, ex);
-        }      
+        }
     }
 
     private void initRoles() {
@@ -224,5 +228,25 @@ public class Register extends javax.swing.JFrame {
     private void clearFields() {
         registerFormFields.forEach(l -> l.setText(""));
         cbUserRole.setSelectedIndex(-1);
+    }
+
+    private boolean validateFields() {
+
+        if (tfUsername.getText().trim().isEmpty()) {
+            MessageUtils.showInformationMessage(REGISTER, "Enter username!");
+            return false;
+        }
+        
+        if (new String(pfPassword.getPassword()).isEmpty()) {
+            MessageUtils.showInformationMessage(REGISTER, "Enter password");
+            return false;
+        }
+        
+        if (cbUserRole.getSelectedIndex() == -1) {
+            MessageUtils.showInformationMessage(REGISTER, "Choose role!");
+            return false;
+        }
+
+        return true;
     }
 }

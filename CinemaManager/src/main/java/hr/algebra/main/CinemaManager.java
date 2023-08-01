@@ -4,22 +4,32 @@
  */
 package hr.algebra.main;
 
+import hr.algebra.dal.login.LoginCallBack;
+import hr.algebra.view.AdminPanel;
+import hr.algebra.view.EditMoviesPanel;
+import hr.algebra.view.EditPeoplePanel;
 import hr.algebra.view.LoginPanel;
 /**
  *
  * @author matej.galic
  */
-public class CinemaManager extends javax.swing.JFrame {
+public class CinemaManager extends javax.swing.JFrame implements LoginCallBack{
 
     private static final String LOGIN_PANEL = "Login";
+    private static final String EDIT_PEOPLE_PANEL = "Edit people";
+    private static final String EDIT_MOVIES_PANEL = "Edit movies";
+    private static final String ADMIN_PANEL = "Admin";
+    private static final String MAIN_PANEL = "Cinema Manager";
     
     /**
      * Creates new form CinemaManager
      */
     public CinemaManager() {
         setDefaultCloseOperation(CinemaManager.EXIT_ON_CLOSE);
+        setTitle(MAIN_PANEL);
         initComponents();
-        configurePanels();
+        loadLoginPanel();
+        setOtherPanels();       
     }
 
     /**
@@ -99,7 +109,35 @@ public class CinemaManager extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
 
-    private void configurePanels() {
-        tpContent.add(LOGIN_PANEL, new LoginPanel());      
+    private void loadLoginPanel() {
+        tpContent.addTab(LOGIN_PANEL, new LoginPanel(this));
+    }
+
+    private void setOtherPanels() {      
+        tpContent.addTab(EDIT_PEOPLE_PANEL, new EditPeoplePanel());
+        tpContent.addTab(EDIT_MOVIES_PANEL, new EditMoviesPanel());
+        tpContent.addTab(ADMIN_PANEL, new AdminPanel());
+        
+        for (int i = 1; i < tpContent.getTabCount(); i++) {
+            tpContent.setEnabledAt(i, false);
+        }
+    }
+
+    @Override
+    public void onDefaultLogin() {
+        loadRequiredPanels(1);
+    }
+
+    @Override
+    public void onAdminLogin() {
+        loadRequiredPanels(0);
+    }
+
+    private void loadRequiredPanels(int x) {
+        for (int i = 1; i < tpContent.getTabCount() - x; i++) {
+            tpContent.setEnabledAt(i, true);
+        }
+        
+        tpContent.setEnabledAt(0, false);
     }
 }
