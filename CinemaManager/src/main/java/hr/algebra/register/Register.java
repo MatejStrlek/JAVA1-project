@@ -236,12 +236,12 @@ public class Register extends javax.swing.JFrame {
             MessageUtils.showInformationMessage(REGISTER, "Enter username!");
             return false;
         }
-        
+
         if (new String(pfPassword.getPassword()).isEmpty()) {
             MessageUtils.showInformationMessage(REGISTER, "Enter password");
             return false;
         }
-        
+
         if (cbUserRole.getSelectedIndex() == -1) {
             MessageUtils.showInformationMessage(REGISTER, "Choose role!");
             return false;

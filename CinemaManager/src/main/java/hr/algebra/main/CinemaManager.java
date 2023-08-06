@@ -9,6 +9,7 @@ import hr.algebra.view.AdminPanel;
 import hr.algebra.view.EditMoviesPanel;
 import hr.algebra.view.EditPeoplePanel;
 import hr.algebra.view.LoginPanel;
+import javax.swing.JPanel;
 /**
  *
  * @author matej.galic
@@ -107,16 +108,20 @@ public class CinemaManager extends javax.swing.JFrame implements LoginCallBack{
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTabbedPane tpContent;
     // End of variables declaration//GEN-END:variables
-
+    
+    JPanel loginPanel = new LoginPanel(this);
+    JPanel editPeoplePanel = new EditPeoplePanel();
+    JPanel editMoviesPanel = new EditMoviesPanel();
+    JPanel adminPanel = new AdminPanel();
 
     private void loadLoginPanel() {
-        tpContent.addTab(LOGIN_PANEL, new LoginPanel(this));
+        tpContent.addTab(LOGIN_PANEL, loginPanel);
     }
 
     private void setOtherPanels() {      
-        tpContent.addTab(EDIT_PEOPLE_PANEL, new EditPeoplePanel());
-        tpContent.addTab(EDIT_MOVIES_PANEL, new EditMoviesPanel());
-        tpContent.addTab(ADMIN_PANEL, new AdminPanel());
+        tpContent.addTab(EDIT_PEOPLE_PANEL, editPeoplePanel);
+        tpContent.addTab(EDIT_MOVIES_PANEL, editMoviesPanel);
+        tpContent.addTab(ADMIN_PANEL, adminPanel);
         
         for (int i = 1; i < tpContent.getTabCount(); i++) {
             tpContent.setEnabledAt(i, false);

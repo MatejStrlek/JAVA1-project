@@ -4,11 +4,21 @@
  */
 package hr.algebra.view;
 
+import hr.algebra.dal.Repository;
+import hr.algebra.dal.RepositoryFactory;
+import hr.algebra.enums.Role;
+import hr.algebra.model.Person;
+import hr.algebra.utilities.MessageUtils;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
- * @author user
+ * @author matej.galic
  */
 public class EditPeoplePanel extends javax.swing.JPanel {
+
+    private static final String EDIT_PEOPLE_PANEL = "People panel";
 
     /**
      * Creates new form EditPeoplePanel
@@ -26,19 +36,140 @@ public class EditPeoplePanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jlPersonName = new javax.swing.JLabel();
+        tfPersonName = new javax.swing.JTextField();
+        btnAddPerson = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        cbPersonRole = new javax.swing.JComboBox<>();
+
+        addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                formComponentShown(evt);
+            }
+        });
+
+        jlPersonName.setText("Full name");
+
+        btnAddPerson.setText("Add person");
+        btnAddPerson.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddPersonActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("Role in movie");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1200, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(30, 30, 30)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jlPersonName))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnAddPerson, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tfPersonName, javax.swing.GroupLayout.DEFAULT_SIZE, 161, Short.MAX_VALUE)
+                    .addComponent(cbPersonRole, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(917, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 780, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(130, 130, 130)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jlPersonName)
+                    .addComponent(tfPersonName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(cbPersonRole, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(btnAddPerson)
+                .addContainerGap(547, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnAddPersonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddPersonActionPerformed
+        addPerson();
+        clearFields();
+    }//GEN-LAST:event_btnAddPersonActionPerformed
+
+    private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
+        init();
+    }//GEN-LAST:event_formComponentShown
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAddPerson;
+    private javax.swing.JComboBox<String> cbPersonRole;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jlPersonName;
+    private javax.swing.JTextField tfPersonName;
     // End of variables declaration//GEN-END:variables
+
+    private Repository repository;
+
+    private void init() {
+        try {
+            initRepository();
+            initRolesInMovie();
+        } catch (Exception e) {
+            MessageUtils.showErrorMessage(EDIT_PEOPLE_PANEL, "Error while loading fields and repo!");
+        }
+    }
+
+    private void initRepository() {
+        repository = RepositoryFactory.getRepository();
+    }
+
+    private void initRolesInMovie() {
+        cbPersonRole.addItem(Role.ACTOR.name());
+        cbPersonRole.addItem(Role.DIRECTOR.name());
+    }
+
+    private void addPerson() {
+
+        if (!validateFields()) {
+            return;
+        }
+
+        String name = tfPersonName.getText().trim();
+        Role personRole = Role.fromString((String) cbPersonRole.getSelectedItem());
+
+        try {
+            Person person = new Person(name, personRole);
+            int createdPerson = repository.createPerson(person);
+
+            if (createdPerson > 0) {
+                MessageUtils.showInformationMessage(EDIT_PEOPLE_PANEL, "Successfully created person!");
+            } else {
+                MessageUtils.showErrorMessage(EDIT_PEOPLE_PANEL, "Some Error!");
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(EditPeoplePanel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void clearFields() {
+        tfPersonName.setText("");
+        cbPersonRole.setSelectedIndex(-1);
+    }
+
+    private boolean validateFields() {
+        if (tfPersonName.getText().trim().isEmpty()) {
+            MessageUtils.showInformationMessage(EDIT_PEOPLE_PANEL, "Enter username!");
+            return false;
+        }
+
+        if (cbPersonRole.getSelectedIndex() == -1) {
+            MessageUtils.showInformationMessage(EDIT_PEOPLE_PANEL, "Choose role!");
+            return false;
+        }
+
+        return true;
+    }
 }
