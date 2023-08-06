@@ -33,7 +33,7 @@ public class SqlRepository implements Repository {
     private static final String ID_PERSON = "IDPerson";
     private static final String NAME = "Name";
     private static final String ROLE = "Role";
-    
+
     private static final String ID_APP_USER = "IDAppUser";
     private static final String USERNAME = "Username";
     private static final String PASSWORD = "Password";
@@ -43,6 +43,7 @@ public class SqlRepository implements Repository {
     private static final String UPDATE_PERSON = "{ CALL updatePerson (?,?,?) }";
     private static final String DELETE_PERSON = "{ CALL deletePerson (?) }";
     private static final String SELECT_PERSON = "{ CALL selectPerson (?) }";
+    private static final String SELECT_PEOPLE = "{ CALL selectPeople }";
     private static final String SELECT_ACTORS = "{ CALL selectActors }";
     private static final String SELECT_DIRECTORS = "{ CALL selectDirectors }";
 
@@ -51,7 +52,7 @@ public class SqlRepository implements Repository {
     private static final String DELETE_MOVIE = "{ CALL deleteMovie (?) }";
     private static final String SELECT_MOVIE = "{ CALL selectMovie (?) }";
     private static final String SELECT_MOVIES = "{ CALL selectMovies }";
-    
+
     private static final String CREATE_USER = "{ CALL createUser (?,?,?,?) }";
     private static final String SELECT_USER = "{ CALL selectUser (?,?) }";
 
@@ -128,12 +129,29 @@ public class SqlRepository implements Repository {
     }
 
     @Override
+    public List<Person> selectPeople() throws Exception {
+        List<Person> people = new ArrayList<>();
+
+        DataSource dataSource = DataSourceSingleton.getInstance();
+        try (Connection con = dataSource.getConnection(); CallableStatement stmt = con.prepareCall(SELECT_PEOPLE); ResultSet rs = stmt.executeQuery();) {
+            while (rs.next()) {
+                people.add(new Person(
+                        rs.getInt(ID_PERSON),
+                        rs.getString(NAME),
+                        Role.fromString(rs.getString(ROLE))
+                ));
+            }
+        }
+
+        return people;
+    }
+
+    @Override
     public List<Person> selectActors() throws Exception {
         List<Person> actors = new ArrayList<>();
 
         DataSource dataSource = DataSourceSingleton.getInstance();
-        try (Connection con = dataSource.getConnection();
-                CallableStatement stmt = con.prepareCall(SELECT_ACTORS); ResultSet rs = stmt.executeQuery();) {
+        try (Connection con = dataSource.getConnection(); CallableStatement stmt = con.prepareCall(SELECT_ACTORS); ResultSet rs = stmt.executeQuery();) {
             while (rs.next()) {
                 actors.add(new Person(
                         rs.getInt(ID_PERSON),
@@ -151,8 +169,7 @@ public class SqlRepository implements Repository {
         List<Person> directors = new ArrayList<>();
 
         DataSource dataSource = DataSourceSingleton.getInstance();
-        try (Connection con = dataSource.getConnection();
-                CallableStatement stmt = con.prepareCall(SELECT_DIRECTORS); ResultSet rs = stmt.executeQuery();) {
+        try (Connection con = dataSource.getConnection(); CallableStatement stmt = con.prepareCall(SELECT_DIRECTORS); ResultSet rs = stmt.executeQuery();) {
             while (rs.next()) {
                 directors.add(new Person(
                         rs.getInt(ID_PERSON),
@@ -330,7 +347,6 @@ public class SqlRepository implements Repository {
 
         return articles;
     }*/
-
     @Override
     public int createUser(AppUser appUser) throws Exception {
         DataSource dataSource = DataSourceSingleton.getInstance();
@@ -357,7 +373,7 @@ public class SqlRepository implements Repository {
             try (ResultSet rs = stmt.executeQuery();) {
                 if (rs.next()) {
                     return Optional.of(new AppUser(
-                            rs.getInt(ID_APP_USER),                           
+                            rs.getInt(ID_APP_USER),
                             User.fromString(rs.getString(APP_ROLE))
                     ));
                 }

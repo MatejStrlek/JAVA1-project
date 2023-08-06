@@ -6,8 +6,8 @@ package hr.algebra.main;
 
 import hr.algebra.dal.login.LoginCallBack;
 import hr.algebra.view.AdminPanel;
-import hr.algebra.view.EditMoviesPanel;
-import hr.algebra.view.EditPeoplePanel;
+import hr.algebra.view.CRUDMoviesPanel;
+import hr.algebra.view.CRUDPeoplePanel;
 import hr.algebra.view.LoginPanel;
 import javax.swing.JPanel;
 /**
@@ -110,8 +110,8 @@ public class CinemaManager extends javax.swing.JFrame implements LoginCallBack{
     // End of variables declaration//GEN-END:variables
     
     JPanel loginPanel = new LoginPanel(this);
-    JPanel editPeoplePanel = new EditPeoplePanel();
-    JPanel editMoviesPanel = new EditMoviesPanel();
+    JPanel editPeoplePanel = new CRUDPeoplePanel();
+    JPanel editMoviesPanel = new CRUDMoviesPanel();
     JPanel adminPanel = new AdminPanel();
 
     private void loadLoginPanel() {

@@ -8,12 +8,12 @@ package hr.algebra.view;
  *
  * @author user
  */
-public class EditMoviesPanel extends javax.swing.JPanel {
+public class CRUDMoviesPanel extends javax.swing.JPanel {
 
     /**
      * Creates new form EditMoviesPanel
      */
-    public EditMoviesPanel() {
+    public CRUDMoviesPanel() {
         initComponents();
     }
 

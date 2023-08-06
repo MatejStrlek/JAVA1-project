@@ -21,6 +21,7 @@ public interface Repository {
     void updatePerson(int id, Person data) throws Exception;
     void deletePerson(int id) throws Exception;
     Optional<Person> selectPerson(int id) throws Exception;
+    List<Person> selectPeople() throws Exception;
     List<Person> selectActors() throws Exception;
     List<Person> selectDirectors() throws Exception;
     
