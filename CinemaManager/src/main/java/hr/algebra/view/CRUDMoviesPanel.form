@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
+  <Events>
+    <EventHandler event="componentShown" listener="java.awt.event.ComponentListener" parameters="java.awt.event.ComponentEvent" handler="formComponentShown"/>
+  </Events>
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
     <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
@@ -16,13 +19,401 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <EmptySpace min="0" pref="1200" max="32767" attributes="0"/>
+          <Group type="102" alignment="1" attributes="0">
+              <EmptySpace min="54" pref="54" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                  <Group type="102" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="jlDescription" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="jlDuration" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="tfDuration" min="-2" pref="143" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Component id="lbDurationError" min="-2" pref="19" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="jScrollPane3" min="-2" pref="345" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Component id="lbDescriptionError" min="-2" pref="19" max="-2" attributes="0"/>
+                          </Group>
+                          <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                                  <Component id="tfPublishedDate" alignment="0" pref="230" max="32767" attributes="0"/>
+                                  <Component id="jlTitle" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jlPubDate" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="tfTitle" alignment="0" max="32767" attributes="0"/>
+                              </Group>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="lbPubDateError" min="-2" pref="19" max="-2" attributes="0"/>
+                                  <Component id="lbTitleError" min="-2" pref="19" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
+                      </Group>
+                      <EmptySpace max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="jScrollPane1" min="-2" pref="203" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Component id="lbPeopleError" min="-2" pref="19" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                  </Group>
+                  <Group type="102" attributes="0">
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="tfYear" max="32767" attributes="0"/>
+                          <Component id="btnAddMovie" max="32767" attributes="0"/>
+                          <Component id="btnDeleteMovie" alignment="0" pref="143" max="32767" attributes="0"/>
+                          <Component id="btnUpdateMovie" alignment="0" pref="143" max="32767" attributes="0"/>
+                      </Group>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="lbYearError" min="-2" pref="19" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="tfImagePath" min="-2" pref="380" max="-2" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
+                              <Component id="btnImageUpload" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Component id="lbImage" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="lbImageError" min="-2" pref="19" max="-2" attributes="0"/>
+                  </Group>
+              </Group>
+              <EmptySpace pref="116" max="32767" attributes="0"/>
+              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                  <Group type="102" attributes="0">
+                      <Component id="jlActorsInDatabase" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="195" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" attributes="0">
+                      <Group type="103" groupAlignment="1" attributes="0">
+                          <Component id="jScrollPane5" pref="0" max="32767" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="jlDirectorsInDatabase" min="-2" max="-2" attributes="0"/>
+                              <Component id="jScrollPane4" min="-2" pref="199" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <EmptySpace min="-2" pref="88" max="-2" attributes="0"/>
+                  </Group>
+              </Group>
+          </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <EmptySpace min="0" pref="780" max="32767" attributes="0"/>
+          <Group type="102" attributes="0">
+              <EmptySpace min="-2" pref="34" max="-2" attributes="0"/>
+              <Component id="jlActorsInDatabase" min="-2" max="-2" attributes="0"/>
+              <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
+              <Component id="jScrollPane5" min="-2" pref="270" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
+              <Component id="jlDirectorsInDatabase" min="-2" max="-2" attributes="0"/>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Component id="jScrollPane4" min="-2" pref="270" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="73" max="-2" attributes="0"/>
+          </Group>
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" attributes="0">
+                      <Component id="jlTitle" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="tfTitle" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="lbTitleError" alignment="3" min="-2" pref="22" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="jlPubDate" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="tfPublishedDate" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="lbPubDateError" alignment="3" min="-2" pref="22" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="jlDescription" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="jScrollPane3" min="-2" pref="116" max="-2" attributes="0"/>
+                          <Component id="lbDescriptionError" min="-2" pref="22" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="jlDuration" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="tfDuration" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="lbDurationError" alignment="3" min="-2" pref="22" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" attributes="0">
+                      <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="lbPeopleError" min="-2" pref="22" max="-2" attributes="0"/>
+                          <Component id="jScrollPane1" min="-2" pref="313" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+              </Group>
+              <EmptySpace pref="9" max="32767" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" attributes="0">
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="tfYear" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="lbYearError" alignment="3" min="-2" pref="22" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
+                      <Component id="btnAddMovie" min="-2" pref="35" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="btnUpdateMovie" min="-2" pref="35" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="btnDeleteMovie" min="-2" pref="35" max="-2" attributes="0"/>
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                  </Group>
+                  <Group type="102" attributes="0">
+                      <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
+                      <Component id="lbImageError" min="-2" pref="22" max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="1" attributes="0">
+                      <EmptySpace min="0" pref="5" max="32767" attributes="0"/>
+                      <Component id="lbImage" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="tfImagePath" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="btnImageUpload" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace pref="59" max="32767" attributes="0"/>
+                  </Group>
+              </Group>
+          </Group>
       </Group>
     </DimensionLayout>
   </Layout>
+  <SubComponents>
+    <Component class="javax.swing.JLabel" name="jlActorsInDatabase">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Actors in database"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jlDirectorsInDatabase">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Directors in database"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jlTitle">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Title"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="tfTitle">
+    </Component>
+    <Component class="javax.swing.JLabel" name="jlPubDate">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Published date"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="tfPublishedDate">
+      <Properties>
+        <Property name="name" type="java.lang.String" value="Date" noResource="true"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jlDescription">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Description"/>
+      </Properties>
+    </Component>
+    <Container class="javax.swing.JScrollPane" name="jScrollPane3">
+      <AuxValues>
+        <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+      </AuxValues>
+
+      <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+      <SubComponents>
+        <Component class="javax.swing.JTextArea" name="taDescription">
+          <Properties>
+            <Property name="columns" type="int" value="20"/>
+            <Property name="rows" type="int" value="5"/>
+          </Properties>
+        </Component>
+      </SubComponents>
+    </Container>
+    <Component class="javax.swing.JLabel" name="jlDuration">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Duration"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel2">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Year"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="tfDuration">
+    </Component>
+    <Component class="javax.swing.JTextField" name="tfYear">
+    </Component>
+    <Container class="javax.swing.JScrollPane" name="jScrollPane4">
+      <AuxValues>
+        <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+      </AuxValues>
+
+      <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+      <SubComponents>
+        <Component class="javax.swing.JList" name="lsDirectorsInDatabase">
+          <Properties>
+            <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
+              <StringArray count="0"/>
+            </Property>
+          </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;Person&gt;"/>
+          </AuxValues>
+        </Component>
+      </SubComponents>
+    </Container>
+    <Container class="javax.swing.JScrollPane" name="jScrollPane5">
+      <AuxValues>
+        <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+      </AuxValues>
+
+      <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+      <SubComponents>
+        <Component class="javax.swing.JList" name="lsActorsInDatabase">
+          <Properties>
+            <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
+              <StringArray count="0"/>
+            </Property>
+          </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;Person&gt;"/>
+          </AuxValues>
+        </Component>
+      </SubComponents>
+    </Container>
+    <Container class="javax.swing.JScrollPane" name="jScrollPane1">
+      <AuxValues>
+        <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+      </AuxValues>
+
+      <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+      <SubComponents>
+        <Component class="javax.swing.JList" name="lsPeopleInMovie">
+          <Properties>
+            <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
+              <StringArray count="0"/>
+            </Property>
+          </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;Person&gt;"/>
+          </AuxValues>
+        </Component>
+      </SubComponents>
+    </Container>
+    <Component class="javax.swing.JLabel" name="jLabel1">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="People in movie"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lbTitleError">
+      <Properties>
+        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="0" green="0" red="cc" type="rgb"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="X"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lbPubDateError">
+      <Properties>
+        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="0" green="0" red="cc" type="rgb"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="X"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lbDurationError">
+      <Properties>
+        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="0" green="0" red="cc" type="rgb"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="X"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lbYearError">
+      <Properties>
+        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="0" green="0" red="cc" type="rgb"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="X"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lbPeopleError">
+      <Properties>
+        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="0" green="0" red="cc" type="rgb"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="X"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lbDescriptionError">
+      <Properties>
+        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="0" green="0" red="cc" type="rgb"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="X"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lbImage">
+      <Properties>
+        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+          <Image iconType="3" name="/assets/no_image.png"/>
+        </Property>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lbImageError">
+      <Properties>
+        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="0" green="0" red="cc" type="rgb"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="X"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="tfImagePath">
+    </Component>
+    <Component class="javax.swing.JButton" name="btnImageUpload">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Choose"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnAddMovie">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Add"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAddMovieActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnDeleteMovie">
+      <Properties>
+        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="0" green="0" red="ff" type="rgb"/>
+        </Property>
+        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="ff" green="ff" red="ff" type="rgb"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="Delete"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnUpdateMovie">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Update"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnUpdateMovieActionPerformed"/>
+      </Events>
+    </Component>
+  </SubComponents>
 </Form>

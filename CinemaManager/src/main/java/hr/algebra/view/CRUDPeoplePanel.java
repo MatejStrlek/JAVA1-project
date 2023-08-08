@@ -21,7 +21,7 @@ import javax.swing.ListSelectionModel;
  */
 public class CRUDPeoplePanel extends javax.swing.JPanel {
 
-    private static final String EDIT_PEOPLE_PANEL = "People panel";
+    private static final String CRUD_PEOPLE_PANEL = "People panel";
 
     /**
      * Creates new form EditPeoplePanel
@@ -48,6 +48,7 @@ public class CRUDPeoplePanel extends javax.swing.JPanel {
         tbPeople = new javax.swing.JTable();
         btnUpdatePerson = new javax.swing.JButton();
         btnDeletePerson = new javax.swing.JButton();
+        jlPeopleInDatabase = new javax.swing.JLabel();
 
         setForeground(new java.awt.Color(255, 255, 255));
         addMouseListener(new java.awt.event.MouseAdapter() {
@@ -111,6 +112,8 @@ public class CRUDPeoplePanel extends javax.swing.JPanel {
             }
         });
 
+        jlPeopleInDatabase.setText("People in database:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -123,7 +126,7 @@ public class CRUDPeoplePanel extends javax.swing.JPanel {
                         .addGap(18, 18, 18)
                         .addComponent(btnUpdatePerson, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(786, 786, 786))
-                    .addGroup(layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -137,13 +140,17 @@ public class CRUDPeoplePanel extends javax.swing.JPanel {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(btnDeletePerson, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGap(147, 147, 147)))
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jlPeopleInDatabase)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(187, 187, 187))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(93, 93, 93)
+                .addGap(65, 65, 65)
+                .addComponent(jlPeopleInDatabase)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(154, 154, 154)
@@ -161,7 +168,7 @@ public class CRUDPeoplePanel extends javax.swing.JPanel {
                         .addGap(18, 18, 18)
                         .addComponent(btnDeletePerson))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(260, Short.MAX_VALUE))
+                .addContainerGap(300, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -178,9 +185,9 @@ public class CRUDPeoplePanel extends javax.swing.JPanel {
             int createdPerson = repository.createPerson(person);
 
             if (createdPerson > 0) {
-                MessageUtils.showInformationMessage(EDIT_PEOPLE_PANEL, "Successfully created person!");
+                MessageUtils.showInformationMessage(CRUD_PEOPLE_PANEL, "Successfully created person!");
             } else {
-                MessageUtils.showErrorMessage(EDIT_PEOPLE_PANEL, "Some Error!");
+                MessageUtils.showErrorMessage(CRUD_PEOPLE_PANEL, "Some Error!");
             }
 
             personTableModel.setPeople(repository.selectPeople());
@@ -205,7 +212,7 @@ public class CRUDPeoplePanel extends javax.swing.JPanel {
 
     private void btnUpdatePersonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdatePersonActionPerformed
         if (selectedPerson == null) {
-            MessageUtils.showErrorMessage(EDIT_PEOPLE_PANEL, "Select person!");
+            MessageUtils.showErrorMessage(CRUD_PEOPLE_PANEL, "Select person!");
             return;
         }
         if (!validateFields()) {
@@ -219,6 +226,8 @@ public class CRUDPeoplePanel extends javax.swing.JPanel {
             repository.updatePerson(selectedPerson.getId(), selectedPerson);
             personTableModel.setPeople(repository.selectPeople());
             clearFields();
+            
+            MessageUtils.showInformationMessage(CRUD_PEOPLE_PANEL, "Person updated!");
         } catch (Exception ex) {
             Logger.getLogger(CRUDPeoplePanel.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -226,7 +235,7 @@ public class CRUDPeoplePanel extends javax.swing.JPanel {
 
     private void btnDeletePersonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeletePersonActionPerformed
         if (selectedPerson == null) {
-            MessageUtils.showErrorMessage(EDIT_PEOPLE_PANEL, "Select person!");
+            MessageUtils.showErrorMessage(CRUD_PEOPLE_PANEL, "Select person!");
             return;
         }
 
@@ -255,6 +264,7 @@ public class CRUDPeoplePanel extends javax.swing.JPanel {
     private javax.swing.JComboBox<String> cbPersonRole;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel jlPeopleInDatabase;
     private javax.swing.JLabel jlPersonName;
     private javax.swing.JTable tbPeople;
     private javax.swing.JTextField tfPersonName;
@@ -271,8 +281,10 @@ public class CRUDPeoplePanel extends javax.swing.JPanel {
             initRepository();
             initRolesInMovie();
             initTable();
-        } catch (Exception e) {
-            MessageUtils.showErrorMessage(EDIT_PEOPLE_PANEL, "Error while loading fields and repo!");
+        } catch (Exception ex) {
+            Logger.getLogger(CRUDPeoplePanel.class.getName()).log(Level.SEVERE, null, ex);
+            MessageUtils.showErrorMessage(CRUD_PEOPLE_PANEL, "Cannot initiate the form");
+            System.exit(1);
         }
     }
 
@@ -293,12 +305,12 @@ public class CRUDPeoplePanel extends javax.swing.JPanel {
 
     private boolean validateFields() {
         if (tfPersonName.getText().trim().isEmpty()) {
-            MessageUtils.showInformationMessage(EDIT_PEOPLE_PANEL, "Enter username!");
+            MessageUtils.showInformationMessage(CRUD_PEOPLE_PANEL, "Enter username!");
             return false;
         }
 
         if (cbPersonRole.getSelectedIndex() == -1) {
-            MessageUtils.showInformationMessage(EDIT_PEOPLE_PANEL, "Choose role!");
+            MessageUtils.showInformationMessage(CRUD_PEOPLE_PANEL, "Choose role!");
             return false;
         }
 
@@ -330,7 +342,7 @@ public class CRUDPeoplePanel extends javax.swing.JPanel {
                 fillForm(selectedPerson);
             }
         } catch (Exception ex) {
-            MessageUtils.showErrorMessage(EDIT_PEOPLE_PANEL, "Some error!");
+            MessageUtils.showErrorMessage(CRUD_PEOPLE_PANEL, "Some error!");
             Logger.getLogger(CRUDPeoplePanel.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

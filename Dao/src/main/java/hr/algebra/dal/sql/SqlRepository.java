@@ -191,8 +191,6 @@ public class SqlRepository implements Repository {
                     .format(Movie.DATE_FORMATTER));
             stmt.setString(DESCRIPTION, movie.getDescription());
             stmt.setString(PICTURE_PATH, movie.getPicturePath());
-            stmt.setString(DIRECTOR, movie.getDirector().getName());
-            //TODO: pogledat kaj sa listom glumaca kak da ubacim to u bazu i tu
             stmt.setInt(DURATION, movie.getDuration());
             stmt.setInt(YEAR, movie.getYear());
 

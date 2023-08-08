@@ -6,7 +6,6 @@ package hr.algebra.model;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 /**
  *
@@ -21,24 +20,20 @@ public class Movie {
     private LocalDateTime publishedDate;
     private String description;
     private String picturePath;
-    private Person director;
-    private List<Person> actors;
     private int duration;
     private int year;
 
-    public Movie(String title, LocalDateTime publishedDate, String description, String picturePath, Person director, List<Person> actors, int duration, int year) {
+    public Movie(String title, LocalDateTime publishedDate, String description, String picturePath, int duration, int year) {
         this.title = title;
         this.publishedDate = publishedDate;
         this.description = description;
         this.picturePath = picturePath;
-        this.director = director;
-        this.actors = actors;
         this.duration = duration;
         this.year = year;
     }
 
-    public Movie(int id, String title, LocalDateTime publishedDate, String description, String picturePath, Person director, List<Person> actors, int duration, int year) {
-        this(title, publishedDate, description, picturePath, director, actors, duration, year);
+    public Movie(int id, String title, LocalDateTime publishedDate, String description, String picturePath, int duration, int year) {
+        this(title, publishedDate, description, picturePath, duration, year);
         this.id = id;      
     }
 
@@ -80,22 +75,6 @@ public class Movie {
 
     public void setPicturePath(String picturePath) {
         this.picturePath = picturePath;
-    }
-
-    public Person getDirector() {
-        return director;
-    }
-
-    public void setDirector(Person director) {
-        this.director = director;
-    }
-
-    public List<Person> getActors() {
-        return actors;
-    }
-
-    public void setActors(List<Person> actors) {
-        this.actors = actors;
     }
 
     public int getDuration() {

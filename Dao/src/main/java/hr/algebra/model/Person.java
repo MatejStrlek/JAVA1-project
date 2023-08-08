@@ -58,7 +58,5 @@ public class Person {
     public String toString() {
         return id + " - " + name + " - " + role;
     }
-
-       
     
 }
