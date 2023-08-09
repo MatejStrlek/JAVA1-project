@@ -5,16 +5,16 @@
 package hr.algebra.model;
 
 import hr.algebra.enums.Role;
+import java.util.Objects;
 
 /**
  *
  * @author matej.galic
  */
+public class Person implements Comparable<Person>{
 
-public class Person {
-    
     private int id;
-    private String name; 
+    private String name;
     private Role role;
 
     public Person() {
@@ -23,11 +23,11 @@ public class Person {
     public Person(String name, Role role) {
         this.name = name;
         this.role = role;
-    } 
+    }
 
     public Person(int id, String name, Role role) {
         this(name, role);
-        this.id = id;        
+        this.id = id;
     }
 
     public int getId() {
@@ -58,5 +58,32 @@ public class Person {
     public String toString() {
         return id + " - " + name + " - " + role;
     }
-    
+
+    @Override
+    public int compareTo(Person o) {
+        return name.compareTo(o.name);
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 17 * hash + Objects.hashCode(this.name);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Person other = (Person) obj;
+        return Objects.equals(this.name, other.name);
+    }
+   
 }

@@ -9,14 +9,21 @@ import hr.algebra.dal.RepositoryFactory;
 import hr.algebra.model.Movie;
 import hr.algebra.model.Person;
 import hr.algebra.model.PersonTransferable;
+import hr.algebra.utilities.FileUtils;
+import hr.algebra.utilities.IconUtils;
 import hr.algebra.utilities.MessageUtils;
 import hr.algebra.view.model.MovieTableModel;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
+import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
@@ -84,6 +91,8 @@ public class CRUDMoviesPanel extends javax.swing.JPanel {
         btnAddMovie = new javax.swing.JButton();
         btnDeleteMovie = new javax.swing.JButton();
         btnUpdateMovie = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tbMovies = new javax.swing.JTable();
 
         addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentShown(java.awt.event.ComponentEvent evt) {
@@ -143,6 +152,11 @@ public class CRUDMoviesPanel extends javax.swing.JPanel {
         lbImageError.setText("X");
 
         btnImageUpload.setText("Choose");
+        btnImageUpload.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnImageUploadActionPerformed(evt);
+            }
+        });
 
         btnAddMovie.setText("Add");
         btnAddMovie.addActionListener(new java.awt.event.ActionListener() {
@@ -162,13 +176,26 @@ public class CRUDMoviesPanel extends javax.swing.JPanel {
             }
         });
 
+        tbMovies.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane2.setViewportView(tbMovies);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(54, 54, 54)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGap(27, 27, 27)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jlDescription)
@@ -192,59 +219,52 @@ public class CRUDMoviesPanel extends javax.swing.JPanel {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(lbPubDateError, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(lbTitleError, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(lbPeopleError, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(layout.createSequentialGroup()
+                                .addComponent(lbPeopleError, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 287, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(tfYear)
-                            .addComponent(btnAddMovie, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnDeleteMovie, javax.swing.GroupLayout.DEFAULT_SIZE, 143, Short.MAX_VALUE)
-                            .addComponent(btnUpdateMovie, javax.swing.GroupLayout.DEFAULT_SIZE, 143, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(lbYearError, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(33, 33, 33)
+                            .addComponent(jlActorsInDatabase)
+                            .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jlDirectorsInDatabase)
+                            .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(90, 90, 90))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(tfYear)
+                                    .addComponent(btnAddMovie, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(btnDeleteMovie, javax.swing.GroupLayout.DEFAULT_SIZE, 143, Short.MAX_VALUE)
+                                    .addComponent(btnUpdateMovie, javax.swing.GroupLayout.DEFAULT_SIZE, 143, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(lbYearError, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(33, 33, 33))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(lbImageError, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(tfImagePath, javax.swing.GroupLayout.PREFERRED_SIZE, 380, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(btnImageUpload))
                             .addComponent(lbImage))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(lbImageError, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 116, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jlActorsInDatabase)
-                        .addGap(195, 195, 195))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jlDirectorsInDatabase)
-                                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(88, 88, 88))))
+                        .addGap(49, 49, 49)
+                        .addComponent(jScrollPane2)
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(34, 34, 34)
-                .addComponent(jlActorsInDatabase)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(32, 32, 32)
-                .addComponent(jlDirectorsInDatabase)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(73, 73, 73))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(23, 23, 23)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(23, 23, 23)
                         .addComponent(jlTitle)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -271,14 +291,28 @@ public class CRUDMoviesPanel extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel2))
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(14, 14, 14)
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lbPeopleError, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 313, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 313, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(28, 28, 28)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jlDirectorsInDatabase)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jlActorsInDatabase)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 394, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(tfYear, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lbYearError, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -287,20 +321,16 @@ public class CRUDMoviesPanel extends javax.swing.JPanel {
                         .addGap(18, 18, 18)
                         .addComponent(btnUpdateMovie, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(btnDeleteMovie, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addComponent(btnDeleteMovie, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(9, 9, 9)
-                        .addComponent(lbImageError, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 5, Short.MAX_VALUE)
-                        .addComponent(lbImage)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(lbImageError, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lbImage))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(tfImagePath, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnImageUpload))
-                        .addContainerGap(59, Short.MAX_VALUE))))
+                            .addComponent(btnImageUpload))))
+                .addContainerGap(97, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -311,6 +341,34 @@ public class CRUDMoviesPanel extends javax.swing.JPanel {
     private void btnAddMovieActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddMovieActionPerformed
         if (!formValid()) {
             return;
+        }
+
+        try {
+            String localPicturePath = uploadPicture();
+            Movie movie = new Movie(
+                    tfTitle.getText().trim(),
+                    LocalDateTime.parse(
+                            tfPublishedDate.getText().trim(),
+                            Movie.DATE_FORMATTER),
+                    taDescription.getText().trim(),
+                    localPicturePath,
+                    Integer.parseInt(tfDuration.getText()),
+                    Integer.parseInt(tfYear.getText())
+            );
+
+            int createdMovie = repository.createMovie(movie);
+
+            if (createdMovie > 0) {
+                MessageUtils.showInformationMessage(CRUD_MOVIES_PANEL, "Successfully created movie!");
+            } else {
+                MessageUtils.showErrorMessage(CRUD_MOVIES_PANEL, "Some Error!");
+            }
+
+            movieTableModel.setMovies(repository.selectMovies());
+            clearForm();
+
+        } catch (Exception ex) {
+            Logger.getLogger(CRUDPeoplePanel.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnAddMovieActionPerformed
 
@@ -324,8 +382,16 @@ public class CRUDMoviesPanel extends javax.swing.JPanel {
             return;
         }
 
-
     }//GEN-LAST:event_btnUpdateMovieActionPerformed
+
+    private void btnImageUploadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImageUploadActionPerformed
+        File file = FileUtils.uploadFile("Images", "jpg", "jpeg", "png");
+        if (file == null) {
+            return;
+        }
+        tfImagePath.setText(file.getAbsolutePath());
+        setIcon(lbImage, file);
+    }//GEN-LAST:event_btnImageUploadActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -336,6 +402,7 @@ public class CRUDMoviesPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
@@ -357,6 +424,7 @@ public class CRUDMoviesPanel extends javax.swing.JPanel {
     private javax.swing.JList<Person> lsDirectorsInDatabase;
     private javax.swing.JList<Person> lsPeopleInMovie;
     private javax.swing.JTextArea taDescription;
+    private javax.swing.JTable tbMovies;
     private javax.swing.JTextField tfDuration;
     private javax.swing.JTextField tfImagePath;
     private javax.swing.JTextField tfPublishedDate;
@@ -375,7 +443,7 @@ public class CRUDMoviesPanel extends javax.swing.JPanel {
 
     private List<Person> actors;
     private List<Person> directors;
-    private List<Person> people;
+    private Set<Person> people = new HashSet<>();
 
     private final DefaultListModel<Person> actorsModel = new DefaultListModel<>();
     private final DefaultListModel<Person> directorsModel = new DefaultListModel<>();
@@ -389,6 +457,7 @@ public class CRUDMoviesPanel extends javax.swing.JPanel {
             initRepository();
             hideErrors();
             loadLists();
+            initTable();
             initDragNDrop();
         } catch (Exception ex) {
             Logger.getLogger(CRUDMoviesPanel.class.getName()).log(Level.SEVERE, null, ex);
@@ -403,6 +472,7 @@ public class CRUDMoviesPanel extends javax.swing.JPanel {
 
     private void hideErrors() {
         errorLabels.forEach(e -> e.setVisible(false));
+        lbPeopleError.setVisible(false);
     }
 
     private void initValidation() {
@@ -421,7 +491,6 @@ public class CRUDMoviesPanel extends javax.swing.JPanel {
                 lbDescriptionError,
                 lbDurationError,
                 lbYearError,
-                lbPeopleError,
                 lbImageError
         );
     }
@@ -434,7 +503,7 @@ public class CRUDMoviesPanel extends javax.swing.JPanel {
             ok &= !validationFields.get(i).getText().trim().isEmpty();
             errorLabels.get(i).setVisible(validationFields.get(i).getText().trim().isEmpty());
 
-            if ("Date".equals(validationFields.get(i).getName())) {
+            if ("Date".equals(validationFields.get(i).getName())) { // valid input pattern: 2017-08-21T19:00:00
                 try {
                     LocalDate.parse(validationFields.get(i).getText().trim(), Movie.DATE_FORMATTER);
                 } catch (Exception e) {
@@ -442,10 +511,21 @@ public class CRUDMoviesPanel extends javax.swing.JPanel {
                     errorLabels.get(i).setVisible(true);
                 }
             }
+
         }
 
         if (lsPeopleInMovie.getModel().getSize() == 0) {
             lbPeopleError.setVisible(true);
+            ok = false;
+        }
+
+        if (!isNumeric(tfDuration.getText())) {
+            lbDurationError.setVisible(true);
+            ok = false;
+        }
+
+        if (!isNumeric(tfYear.getText())) {
+            lbYearError.setVisible(true);
             ok = false;
         }
 
@@ -455,12 +535,7 @@ public class CRUDMoviesPanel extends javax.swing.JPanel {
     private void clearForm() {
         hideErrors();
         validationFields.forEach(e -> e.setText(""));
-        directorsModel.clear();
-        actorsModel.clear();
-        directorsModel.clear();
         peopleModel.clear();
-        lsActorsInDatabase.clearSelection();
-        lsDirectorsInDatabase.clearSelection();
     }
 
     private void loadLists() {
@@ -495,11 +570,13 @@ public class CRUDMoviesPanel extends javax.swing.JPanel {
 
         lsDirectorsInDatabase.setModel(directorsModel);
     }
-    
-    private void loadPeopleModel(){
-        peopleModel.clear();    
-        people.forEach(peopleModel::addElement);       
+
+    private void loadPeopleModel() {
+        peopleModel.clear();
+        System.out.println("People List Contents: " + people);
+        people.forEach(peopleModel::addElement);
         lsPeopleInMovie.setModel(peopleModel);
+
     }
 
     private void initDragNDrop() {
@@ -520,6 +597,46 @@ public class CRUDMoviesPanel extends javax.swing.JPanel {
         lsDirectorsInDatabase.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         lsDirectorsInDatabase.setDragEnabled(true);
         lsDirectorsInDatabase.setTransferHandler(new ExportDirectorsHandler());
+    }
+
+    private void initTable() throws Exception {
+        tbMovies.setRowHeight(25);
+        tbMovies.setAutoCreateRowSorter(true);
+        tbMovies.setSelectionMode(
+                ListSelectionModel.SINGLE_SELECTION);
+
+        movieTableModel = new MovieTableModel(
+                repository.selectMovies());
+        tbMovies.setModel(movieTableModel);
+    }
+
+    private boolean isNumeric(String text) {
+        try {
+            Integer.parseInt(text);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    private void setIcon(JLabel label, File file) {
+        try {
+            label.setIcon(IconUtils.createIcon(file, label.getWidth(), label.getHeight()));
+        } catch (IOException ex) {
+            Logger.getLogger(CRUDMoviesPanel.class.getName()).log(Level.SEVERE, null, ex);
+            MessageUtils.showErrorMessage("Error", "Unable to set icon!");
+        }
+    }
+
+    private String uploadPicture() throws IOException {
+        String picturePath = tfImagePath.getText();
+        String ext = picturePath.substring(
+                picturePath.lastIndexOf("."));
+        String pictureName = UUID.randomUUID() + ext;
+        String localPath = DIR + File.separator + pictureName;
+        FileUtils.copy(picturePath, localPath);
+
+        return localPath;
     }
 
     private class ExportActorsHandler extends TransferHandler {
@@ -563,12 +680,12 @@ public class CRUDMoviesPanel extends javax.swing.JPanel {
 
             try {
                 Person person = (Person) transferable.getTransferData(PersonTransferable.PERSON_FLAVOUR);
-                
+
                 if (people.add(person)) {
-                    MessageUtils.showInformationMessage(CRUD_MOVIES_PANEL, "Ubacio");
                     loadPeopleModel();
                     return true;
                 }
+
             } catch (UnsupportedFlavorException | IOException ex) {
                 Logger.getLogger(CRUDMoviesPanel.class.getName()).log(Level.SEVERE, null, ex);
             }

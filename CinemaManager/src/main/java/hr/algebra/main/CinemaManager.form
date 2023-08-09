@@ -26,12 +26,12 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="tpContent" alignment="1" pref="1200" max="32767" attributes="0"/>
+          <Component id="tpContent" alignment="1" pref="1447" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="tpContent" alignment="1" pref="800" max="32767" attributes="0"/>
+          <Component id="tpContent" alignment="1" pref="860" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
   </Layout>

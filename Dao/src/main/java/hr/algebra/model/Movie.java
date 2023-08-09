@@ -36,7 +36,7 @@ public class Movie {
         this(title, publishedDate, description, picturePath, duration, year);
         this.id = id;      
     }
-
+    
     public int getId() {
         return id;
     }
