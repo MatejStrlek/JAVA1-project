@@ -17,11 +17,14 @@ import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Level;
@@ -187,6 +190,16 @@ public class CRUDMoviesPanel extends javax.swing.JPanel {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tbMovies.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbMoviesMouseClicked(evt);
+            }
+        });
+        tbMovies.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                tbMoviesKeyReleased(evt);
+            }
+        });
         jScrollPane2.setViewportView(tbMovies);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -373,8 +386,8 @@ public class CRUDMoviesPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_btnAddMovieActionPerformed
 
     private void btnUpdateMovieActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateMovieActionPerformed
-        if (selectedPerson == null) {
-            MessageUtils.showInformationMessage(CRUD_MOVIES_PANEL, "Not this time!");
+        if (selectedMovie == null) {
+            MessageUtils.showInformationMessage(CRUD_MOVIES_PANEL, "Choose movie bro!");
             return;
         }
 
@@ -392,6 +405,14 @@ public class CRUDMoviesPanel extends javax.swing.JPanel {
         tfImagePath.setText(file.getAbsolutePath());
         setIcon(lbImage, file);
     }//GEN-LAST:event_btnImageUploadActionPerformed
+
+    private void tbMoviesKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbMoviesKeyReleased
+        showMovie();
+    }//GEN-LAST:event_tbMoviesKeyReleased
+
+    private void tbMoviesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbMoviesMouseClicked
+        showMovie();
+    }//GEN-LAST:event_tbMoviesMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -439,7 +460,7 @@ public class CRUDMoviesPanel extends javax.swing.JPanel {
 
     private MovieTableModel movieTableModel;
 
-    private Person selectedPerson;
+    private Movie selectedMovie;
 
     private List<Person> actors;
     private List<Person> directors;
@@ -535,6 +556,7 @@ public class CRUDMoviesPanel extends javax.swing.JPanel {
     private void clearForm() {
         hideErrors();
         validationFields.forEach(e -> e.setText(""));
+        lbImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/no_image.png")));
         peopleModel.clear();
     }
 
@@ -619,15 +641,6 @@ public class CRUDMoviesPanel extends javax.swing.JPanel {
         }
     }
 
-    private void setIcon(JLabel label, File file) {
-        try {
-            label.setIcon(IconUtils.createIcon(file, label.getWidth(), label.getHeight()));
-        } catch (IOException ex) {
-            Logger.getLogger(CRUDMoviesPanel.class.getName()).log(Level.SEVERE, null, ex);
-            MessageUtils.showErrorMessage("Error", "Unable to set icon!");
-        }
-    }
-
     private String uploadPicture() throws IOException {
         String picturePath = tfImagePath.getText();
         String ext = picturePath.substring(
@@ -637,6 +650,50 @@ public class CRUDMoviesPanel extends javax.swing.JPanel {
         FileUtils.copy(picturePath, localPath);
 
         return localPath;
+    }
+
+    private void showMovie() {
+        clearForm();
+
+        int selectedRow = tbMovies.getSelectedRow();
+        int rowIndex = tbMovies.convertRowIndexToModel(selectedRow);
+        int id = (int) movieTableModel.getValueAt(rowIndex, 0);
+
+        try {
+            Optional<Movie> opt = repository.selectMovie(id);
+            if (opt.isPresent()) {
+                selectedMovie = opt.get();
+                fillForm(selectedMovie);
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(CRUDMoviesPanel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void fillForm(Movie movie) {
+        tfTitle.setText(movie.getTitle());
+        tfPublishedDate.setText(movie.getPublishedDate().format(
+                Movie.DATE_FORMATTER
+        ));
+        taDescription.setText(movie.getDescription());
+        tfDuration.setText(movie.getDuration() + "");
+        tfYear.setText(movie.getYear() + "");
+
+        if (movie.getPicturePath() != null
+                && Files.exists(Paths.get(movie.getPicturePath()))) {
+            tfImagePath.setText(movie.getPicturePath());
+            setIcon(lbImage, new File(movie.getPicturePath()));
+        }
+
+    }
+
+    private void setIcon(JLabel label, File file) {
+        try {
+            label.setIcon(IconUtils.createIcon(file, label.getWidth(), label.getHeight()));
+        } catch (IOException ex) {
+            Logger.getLogger(CRUDMoviesPanel.class.getName()).log(Level.SEVERE, null, ex);
+            MessageUtils.showErrorMessage(CRUD_MOVIES_PANEL, "Unable to set icon!");
+        }
     }
 
     private class ExportActorsHandler extends TransferHandler {

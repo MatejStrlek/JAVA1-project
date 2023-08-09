@@ -199,11 +199,11 @@ public class CRUDPeoplePanel extends javax.swing.JPanel {
     }//GEN-LAST:event_formComponentShown
 
     private void tbPeopleMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbPeopleMouseClicked
-        showPeople();
+        showPerson();
     }//GEN-LAST:event_tbPeopleMouseClicked
 
     private void tbPeopleKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbPeopleKeyReleased
-        showPeople();
+        showPerson();
     }//GEN-LAST:event_tbPeopleKeyReleased
 
     private void btnUpdatePersonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdatePersonActionPerformed
@@ -324,7 +324,7 @@ public class CRUDPeoplePanel extends javax.swing.JPanel {
         tbPeople.setModel(personTableModel);
     }
 
-    private void showPeople() {
+    private void showPerson() {
         clearFields();
 
         try {
