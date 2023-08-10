@@ -66,8 +66,8 @@ public class Person implements Comparable<Person>{
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 17 * hash + Objects.hashCode(this.name);
+        int hash = 5;
+        hash = 31 * hash + Objects.hashCode(this.name);
         return hash;
     }
 
@@ -85,5 +85,6 @@ public class Person implements Comparable<Person>{
         final Person other = (Person) obj;
         return Objects.equals(this.name, other.name);
     }
-   
+
+           
 }

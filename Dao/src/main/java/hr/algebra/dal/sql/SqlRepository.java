@@ -16,8 +16,10 @@ import java.sql.ResultSet;
 import java.sql.Types;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import javax.sql.DataSource;
 
 public class SqlRepository implements Repository {
@@ -39,6 +41,11 @@ public class SqlRepository implements Repository {
     private static final String PASSWORD = "Password";
     private static final String APP_ROLE = "Role";
 
+    private static final String FK_PERSON_ID = "PersonID";
+    private static final String FK_MOVIE_ID = "MovieID";
+    private static final String ROLE_IN_MOVIE = "RoleInMovie";
+    private static final String ID_PERSON_MOVIE = "IDPersonMovie";
+
     private static final String CREATE_PERSON = "{ CALL createPerson (?,?,?) }";
     private static final String UPDATE_PERSON = "{ CALL updatePerson (?,?,?) }";
     private static final String DELETE_PERSON = "{ CALL deletePerson (?) }";
@@ -52,6 +59,9 @@ public class SqlRepository implements Repository {
     private static final String DELETE_MOVIE = "{ CALL deleteMovie (?) }";
     private static final String SELECT_MOVIE = "{ CALL selectMovie (?) }";
     private static final String SELECT_MOVIES = "{ CALL selectMovies }";
+
+    private static final String CREATE_PERSON_IN_MOVIE = "{ CALL createPersonInMovie (?,?,?,?) }";
+    private static final String SELECT_PEOPLE_IN_MOVIE = "{ CALL selectPeopleInMovie (?) }";
 
     private static final String CREATE_USER = "{ CALL createUser (?,?,?,?) }";
     private static final String SELECT_USER = "{ CALL selectUser (?,?) }";
@@ -267,6 +277,45 @@ public class SqlRepository implements Repository {
     }
 
     @Override
+    public void createPeopleInMovie(int createdMovieId, Set<Person> people) throws Exception {
+        DataSource dataSource = DataSourceSingleton.getInstance();
+        try (Connection con = dataSource.getConnection(); CallableStatement stmt = con.prepareCall(CREATE_PERSON_IN_MOVIE);) {
+
+            for (Person person : people) {
+                stmt.setInt(FK_PERSON_ID, person.getId());
+                stmt.setInt(FK_MOVIE_ID, createdMovieId);
+                stmt.setString(ROLE_IN_MOVIE, person.getRole().name());
+
+                stmt.registerOutParameter(ID_PERSON_MOVIE, Types.INTEGER);
+                stmt.executeUpdate();
+            }
+
+        }
+    }
+
+    @Override
+    public Set<Person> selectPeopleInMovie(int movieId) throws Exception {
+        Set<Person> peopleInMovie = new HashSet<>();
+
+        DataSource dataSource = DataSourceSingleton.getInstance();
+        try (Connection con = dataSource.getConnection(); CallableStatement stmt = con.prepareCall(SELECT_PEOPLE_IN_MOVIE);) {
+
+            stmt.setInt(FK_MOVIE_ID, movieId);
+
+            try (ResultSet rs = stmt.executeQuery();) {
+                while (rs.next()) {
+                    peopleInMovie.add(new Person(
+                            rs.getInt(ID_PERSON),
+                            rs.getString(NAME),
+                            Role.fromString(rs.getString(ROLE))
+                    ));
+                }
+            }
+        }
+        return peopleInMovie;
+    }
+
+    @Override
     public int createUser(AppUser appUser) throws Exception {
         DataSource dataSource = DataSourceSingleton.getInstance();
         try (Connection con = dataSource.getConnection(); CallableStatement stmt = con.prepareCall(CREATE_USER);) {
@@ -301,4 +350,5 @@ public class SqlRepository implements Repository {
         }
         return Optional.empty();
     }
+
 }

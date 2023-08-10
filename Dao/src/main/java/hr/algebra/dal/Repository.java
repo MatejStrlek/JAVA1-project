@@ -9,6 +9,7 @@ import hr.algebra.model.Person;
 import hr.algebra.model.Movie;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  *
@@ -32,7 +33,10 @@ public interface Repository {
     Optional<Movie> selectMovie(int id) throws Exception;
     List<Movie> selectMovies() throws Exception;
     
-    int createUser(AppUser appUser) throws Exception;
-    Optional<AppUser> selectUser(String username, String password) throws Exception;
+    void createPeopleInMovie(int createdMovieId, Set<Person> people) throws Exception;
+    Set<Person> selectPeopleInMovie(int movieId) throws Exception;
     
+    int createUser(AppUser appUser) throws Exception;
+    Optional<AppUser> selectUser(String username, String password) throws Exception;   
+
 }
