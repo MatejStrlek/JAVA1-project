@@ -62,6 +62,7 @@ public class SqlRepository implements Repository {
 
     private static final String CREATE_PERSON_IN_MOVIE = "{ CALL createPersonInMovie (?,?,?,?) }";
     private static final String SELECT_PEOPLE_IN_MOVIE = "{ CALL selectPeopleInMovie (?) }";
+    private static final String DELETE_PEOPLE_IN_MOVIE = "{ CALL deletePeopleInMovie (?) }";
 
     private static final String CREATE_USER = "{ CALL createUser (?,?,?,?) }";
     private static final String SELECT_USER = "{ CALL selectUser (?,?) }";
@@ -326,6 +327,16 @@ public class SqlRepository implements Repository {
         }
         return peopleInMovie;
     }
+    
+    @Override
+    public void deletePeopleInMovie(int id) throws Exception {
+        DataSource dataSource = DataSourceSingleton.getInstance();
+        try (Connection con = dataSource.getConnection(); CallableStatement stmt = con.prepareCall(DELETE_PEOPLE_IN_MOVIE);) {
+
+            stmt.setInt(FK_MOVIE_ID, id);
+            stmt.executeUpdate();
+        }
+    }
 
     @Override
     public int createUser(AppUser appUser) throws Exception {
@@ -361,6 +372,6 @@ public class SqlRepository implements Repository {
 
         }
         return Optional.empty();
-    }
+    }   
 
 }

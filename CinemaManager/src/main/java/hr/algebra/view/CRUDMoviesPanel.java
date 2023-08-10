@@ -97,7 +97,7 @@ public class CRUDMoviesPanel extends javax.swing.JPanel {
         jScrollPane2 = new javax.swing.JScrollPane();
         tbMovies = new javax.swing.JTable();
         btnUpdateMovie = new javax.swing.JButton();
-        btnClearPeopleInMovie = new javax.swing.JButton();
+        btnDeletePeopleInMovie = new javax.swing.JButton();
 
         addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentShown(java.awt.event.ComponentEvent evt) {
@@ -211,10 +211,12 @@ public class CRUDMoviesPanel extends javax.swing.JPanel {
             }
         });
 
-        btnClearPeopleInMovie.setText("Clear people in movie");
-        btnClearPeopleInMovie.addActionListener(new java.awt.event.ActionListener() {
+        btnDeletePeopleInMovie.setBackground(new java.awt.Color(255, 0, 0));
+        btnDeletePeopleInMovie.setForeground(new java.awt.Color(255, 255, 255));
+        btnDeletePeopleInMovie.setText("Delete people in movie");
+        btnDeletePeopleInMovie.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnClearPeopleInMovieActionPerformed(evt);
+                btnDeletePeopleInMovieActionPerformed(evt);
             }
         });
 
@@ -256,7 +258,7 @@ public class CRUDMoviesPanel extends javax.swing.JPanel {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(lbPeopleError, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(btnClearPeopleInMovie, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                    .addComponent(btnDeletePeopleInMovie, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                         .addGap(163, 163, 163)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jlActorsInDatabase)
@@ -327,11 +329,11 @@ public class CRUDMoviesPanel extends javax.swing.JPanel {
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 313, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(lbPeopleError, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(15, 15, 15)
-                                .addComponent(btnClearPeopleInMovie, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 313, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnDeletePeopleInMovie, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(28, 28, 28)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -343,7 +345,7 @@ public class CRUDMoviesPanel extends javax.swing.JPanel {
                                 .addComponent(jlActorsInDatabase)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 394, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
@@ -416,17 +418,35 @@ public class CRUDMoviesPanel extends javax.swing.JPanel {
         updateMovie();
     }//GEN-LAST:event_btnUpdateMovieActionPerformed
 
-    private void btnClearPeopleInMovieActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearPeopleInMovieActionPerformed
+    private void btnDeletePeopleInMovieActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeletePeopleInMovieActionPerformed
+        if (peopleModel.getSize() == 0) {
+            return;
+        } else {
+            try {
+                if (!repository.selectPeopleInMovie(selectedMovie.getId()).isEmpty()) {
+                    repository.deletePeopleInMovie(selectedMovie.getId());
+                    clearPeople();
+                } else {
+                    clearPeople();
+                }
+            } catch (Exception ex) {
+                Logger.getLogger(CRUDMoviesPanel.class.getName()).log(Level.SEVERE, null, ex);
+                MessageUtils.showInformationMessage(CRUD_MOVIES_PANEL, ex.getMessage());
+            }
+        }
+    }//GEN-LAST:event_btnDeletePeopleInMovieActionPerformed
+
+    private void clearPeople() {
         peopleModel.clear();
         people.clear();
-    }//GEN-LAST:event_btnClearPeopleInMovieActionPerformed
+    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddMovie;
     private javax.swing.JButton btnClearAll;
-    private javax.swing.JButton btnClearPeopleInMovie;
     private javax.swing.JButton btnDeleteMovie;
+    private javax.swing.JButton btnDeletePeopleInMovie;
     private javax.swing.JButton btnImageUpload;
     private javax.swing.JButton btnUpdateMovie;
     private javax.swing.JLabel jLabel1;
@@ -628,6 +648,8 @@ public class CRUDMoviesPanel extends javax.swing.JPanel {
             repository.updateMovie(selectedMovie.getId(), selectedMovie);
             movieTableModel.setMovies(repository.selectMovies());
 
+            updatePeopleInMovie();
+
             clearForm();
             MessageUtils.showInformationMessage(CRUD_MOVIES_PANEL, "Movie updated!");
         } catch (Exception ex) {
@@ -775,6 +797,11 @@ public class CRUDMoviesPanel extends javax.swing.JPanel {
     private void fillLsPeopleInMovie(int movieId) throws Exception {
         people = repository.selectPeopleInMovie(movieId);
         loadPeopleModel();
+    }
+
+    private void updatePeopleInMovie() throws Exception {
+        repository.deletePeopleInMovie(selectedMovie.getId());
+        repository.createPeopleInMovie(selectedMovie.getId(), people);   
     }
 
     private class ExportActorsHandler extends TransferHandler {

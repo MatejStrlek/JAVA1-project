@@ -35,6 +35,7 @@ public interface Repository {
     
     void createPeopleInMovie(int createdMovieId, Set<Person> people) throws Exception;
     Set<Person> selectPeopleInMovie(int movieId) throws Exception;
+    public void deletePeopleInMovie(int id) throws Exception;
     
     int createUser(AppUser appUser) throws Exception;
     Optional<AppUser> selectUser(String username, String password) throws Exception;   
