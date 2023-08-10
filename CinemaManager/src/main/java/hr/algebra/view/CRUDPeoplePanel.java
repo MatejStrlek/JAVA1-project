@@ -169,7 +169,7 @@ public class CRUDPeoplePanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAddPersonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddPersonActionPerformed
-        if (!validateFields()) {
+        if (!formValid()) {
             return;
         }
 
@@ -211,14 +211,18 @@ public class CRUDPeoplePanel extends javax.swing.JPanel {
             MessageUtils.showErrorMessage(CRUD_PEOPLE_PANEL, "Select person!");
             return;
         }
-        if (!validateFields()) {
+        if (!formValid()) {
             return;
         }
 
+        updatePerson();
+    }//GEN-LAST:event_btnUpdatePersonActionPerformed
+
+    private void updatePerson() {
         try {
             selectedPerson.setName(tfPersonName.getText().trim());
             selectedPerson.setRole(Role.fromString((String) cbPersonRole.getSelectedItem()));
-
+            
             repository.updatePerson(selectedPerson.getId(), selectedPerson);
             personTableModel.setPeople(repository.selectPeople());
             clearFields();
@@ -227,7 +231,7 @@ public class CRUDPeoplePanel extends javax.swing.JPanel {
         } catch (Exception ex) {
             Logger.getLogger(CRUDPeoplePanel.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }//GEN-LAST:event_btnUpdatePersonActionPerformed
+    }
 
     private void btnDeletePersonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeletePersonActionPerformed
         if (selectedPerson == null) {
@@ -289,6 +293,7 @@ public class CRUDPeoplePanel extends javax.swing.JPanel {
     }
 
     private void initRolesInMovie() {
+        cbPersonRole.removeAllItems();
         cbPersonRole.addItem(Role.ACTOR.name());
         cbPersonRole.addItem(Role.DIRECTOR.name());
     }
@@ -299,7 +304,7 @@ public class CRUDPeoplePanel extends javax.swing.JPanel {
         selectedPerson = null;
     }
 
-    private boolean validateFields() {
+    private boolean formValid() {
         if (tfPersonName.getText().trim().isEmpty()) {
             MessageUtils.showInformationMessage(CRUD_PEOPLE_PANEL, "Enter username!");
             return false;

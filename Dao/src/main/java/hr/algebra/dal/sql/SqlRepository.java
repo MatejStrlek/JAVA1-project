@@ -96,11 +96,11 @@ public class SqlRepository implements Repository {
     }
 
     @Override
-    public void updatePerson(int id, Person data) throws Exception {
+    public void updatePerson(int id, Person person) throws Exception {
         DataSource dataSource = DataSourceSingleton.getInstance();
         try (Connection con = dataSource.getConnection(); CallableStatement stmt = con.prepareCall(UPDATE_PERSON);) {
-            stmt.setString(NAME, data.getName());
-            stmt.setString(ROLE, data.getRole().name());
+            stmt.setString(NAME, person.getName());
+            stmt.setString(ROLE, person.getRole().name());
 
             stmt.setInt(ID_PERSON, id);
             stmt.executeUpdate();
@@ -217,8 +217,20 @@ public class SqlRepository implements Repository {
     }
 
     @Override
-    public void updateMovie(int id, Movie data) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public void updateMovie(int id, Movie movie) throws Exception {
+        DataSource dataSource = DataSourceSingleton.getInstance();
+        try (Connection con = dataSource.getConnection(); CallableStatement stmt = con.prepareCall(UPDATE_MOVIE);) {
+            stmt.setString(TITLE, movie.getTitle());
+            stmt.setString(PUBLISHED_DATE, movie.getPublishedDate()
+                    .format(Movie.DATE_FORMATTER));
+            stmt.setString(DESCRIPTION, movie.getDescription());
+            stmt.setString(PICTURE_PATH, movie.getPicturePath());
+            stmt.setInt(DURATION, movie.getDuration());
+            stmt.setInt(YEAR, movie.getYear());
+
+            stmt.setInt(ID_MOVIE, id);
+            stmt.executeUpdate();
+        }
     }
 
     @Override

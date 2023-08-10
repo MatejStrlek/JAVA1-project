@@ -379,35 +379,7 @@ public class CRUDMoviesPanel extends javax.swing.JPanel {
         if (!formValid()) {
             return;
         }
-
-        try {
-            String localPicturePath = uploadPicture();
-            Movie movie = new Movie(
-                    tfTitle.getText().trim(),
-                    LocalDateTime.parse(
-                            tfPublishedDate.getText().trim(),
-                            Movie.DATE_FORMATTER),
-                    taDescription.getText().trim(),
-                    localPicturePath,
-                    Integer.parseInt(tfDuration.getText()),
-                    Integer.parseInt(tfYear.getText())
-            );
-
-            int createdMovie = repository.createMovie(movie);
-
-            if (createdMovie > 0) {
-                MessageUtils.showInformationMessage(CRUD_MOVIES_PANEL, "Successfully created movie!");
-                repository.createPeopleInMovie(createdMovie, people);
-            } else {
-                MessageUtils.showErrorMessage(CRUD_MOVIES_PANEL, "Some Error!");
-            }
-
-            movieTableModel.setMovies(repository.selectMovies());
-            clearForm();
-
-        } catch (Exception ex) {
-            Logger.getLogger(CRUDPeoplePanel.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        addMovie();
     }//GEN-LAST:event_btnAddMovieActionPerformed
 
     private void btnClearAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearAllActionPerformed
@@ -441,7 +413,7 @@ public class CRUDMoviesPanel extends javax.swing.JPanel {
             return;
         }
 
-
+        updateMovie();
     }//GEN-LAST:event_btnUpdateMovieActionPerformed
 
     private void btnClearPeopleInMovieActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearPeopleInMovieActionPerformed
@@ -596,6 +568,72 @@ public class CRUDMoviesPanel extends javax.swing.JPanel {
         lbImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/no_image.png")));
         peopleModel.clear();
         people.clear();
+        selectedMovie = null;
+    }
+
+    private void addMovie() {
+        try {
+            String localPicturePath = uploadPicture();
+            Movie movie = new Movie(
+                    tfTitle.getText().trim(),
+                    LocalDateTime.parse(
+                            tfPublishedDate.getText().trim(),
+                            Movie.DATE_FORMATTER),
+                    taDescription.getText().trim(),
+                    localPicturePath,
+                    Integer.parseInt(tfDuration.getText().trim()),
+                    Integer.parseInt(tfYear.getText().trim())
+            );
+
+            int createdMovie = repository.createMovie(movie);
+
+            if (createdMovie > 0) {
+                MessageUtils.showInformationMessage(CRUD_MOVIES_PANEL, "Successfully created movie!");
+                repository.createPeopleInMovie(createdMovie, people);
+            } else {
+                MessageUtils.showErrorMessage(CRUD_MOVIES_PANEL, "Some Error!");
+            }
+
+            movieTableModel.setMovies(repository.selectMovies());
+            clearForm();
+
+        } catch (Exception ex) {
+            Logger.getLogger(CRUDPeoplePanel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void updateMovie() {
+        try {
+            if (!tfImagePath.getText()
+                    .equals(selectedMovie.getPicturePath())) {
+                if (selectedMovie.getPicturePath() != null) {
+                    Files.deleteIfExists(
+                            Paths.get(selectedMovie.getPicturePath())
+                    );
+                }
+                String localPicturePath = uploadPicture();
+                selectedMovie.setPicturePath(localPicturePath);
+            }
+
+            selectedMovie.setTitle(tfTitle.getText().trim());
+            selectedMovie.setPublishedDate(LocalDateTime.parse(
+                    tfPublishedDate.getText().trim(),
+                    Movie.DATE_FORMATTER));
+            selectedMovie.setDescription(taDescription.getText().trim());
+            selectedMovie.setDuration(
+                    Integer.parseInt(tfDuration.getText().trim()));
+            selectedMovie.setYear(
+                    Integer.parseInt(tfYear.getText().trim()));
+
+            repository.updateMovie(selectedMovie.getId(), selectedMovie);
+            movieTableModel.setMovies(repository.selectMovies());
+
+            clearForm();
+            MessageUtils.showInformationMessage(CRUD_MOVIES_PANEL, "Movie updated!");
+        } catch (Exception ex) {
+            Logger.getLogger(CRUDPeoplePanel.class.getName()).log(Level.SEVERE, null, ex);
+            MessageUtils.showInformationMessage(CRUD_MOVIES_PANEL, "ovdje");
+        }
     }
 
     private void loadLists() {
