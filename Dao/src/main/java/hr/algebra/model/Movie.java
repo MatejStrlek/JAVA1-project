@@ -23,6 +23,9 @@ public class Movie {
     private int duration;
     private int year;
 
+    public Movie() {
+    }
+    
     public Movie(String title, LocalDateTime publishedDate, String description, String picturePath, int duration, int year) {
         this.title = title;
         this.publishedDate = publishedDate;
@@ -52,7 +55,7 @@ public class Movie {
     public void setTitle(String title) {
         this.title = title;
     }
-
+    
     public LocalDateTime getPublishedDate() {
         return publishedDate;
     }

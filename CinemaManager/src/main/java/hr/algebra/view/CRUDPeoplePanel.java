@@ -64,6 +64,8 @@ public class CRUDPeoplePanel extends javax.swing.JPanel {
 
         jlPersonName.setText("Full name");
 
+        btnAddPerson.setBackground(new java.awt.Color(0, 204, 0));
+        btnAddPerson.setForeground(new java.awt.Color(255, 255, 255));
         btnAddPerson.setText("Add person");
         btnAddPerson.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -97,6 +99,8 @@ public class CRUDPeoplePanel extends javax.swing.JPanel {
         });
         jScrollPane1.setViewportView(tbPeople);
 
+        btnUpdatePerson.setBackground(new java.awt.Color(51, 153, 255));
+        btnUpdatePerson.setForeground(new java.awt.Color(255, 255, 255));
         btnUpdatePerson.setText("Update person");
         btnUpdatePerson.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -105,6 +109,7 @@ public class CRUDPeoplePanel extends javax.swing.JPanel {
         });
 
         btnDeletePerson.setBackground(new java.awt.Color(255, 0, 0));
+        btnDeletePerson.setForeground(new java.awt.Color(255, 255, 255));
         btnDeletePerson.setText("Delete person");
         btnDeletePerson.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -196,6 +201,7 @@ public class CRUDPeoplePanel extends javax.swing.JPanel {
 
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
         init();
+        clearFields();
     }//GEN-LAST:event_formComponentShown
 
     private void tbPeopleMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbPeopleMouseClicked

@@ -33,11 +33,19 @@ public interface Repository {
     Optional<Movie> selectMovie(int id) throws Exception;
     List<Movie> selectMovies() throws Exception;
     
+    int createPersonInMovie(int movieId, int personId, Person person) throws Exception;
     void createPeopleInMovie(int createdMovieId, Set<Person> people) throws Exception;
     Set<Person> selectPeopleInMovie(int movieId) throws Exception;
     public void deletePeopleInMovie(int id) throws Exception;
     
     int createUser(AppUser appUser) throws Exception;
-    Optional<AppUser> selectUser(String username, String password) throws Exception;   
+    Optional<AppUser> selectUser(String username, String password) throws Exception;
+    
+    void deleteAllData() throws Exception;
 
+    Optional<Integer> findPerson(Person person) throws Exception;
+    Optional<Integer> findMovie(String title) throws Exception;
+
+    public void deleteDuplicateMovies() throws Exception;
+    
 }

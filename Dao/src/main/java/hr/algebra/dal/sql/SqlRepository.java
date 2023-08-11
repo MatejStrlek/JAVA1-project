@@ -53,6 +53,8 @@ public class SqlRepository implements Repository {
     private static final String SELECT_PEOPLE = "{ CALL selectPeople }";
     private static final String SELECT_ACTORS = "{ CALL selectActors }";
     private static final String SELECT_DIRECTORS = "{ CALL selectDirectors }";
+    private static final String FIND_PERSON = "{ CALL findPerson (?,?) }";
+    private static final String FIND_MOVIE = "{ CALL findMovie (?) }";
 
     private static final String CREATE_MOVIE = "{ CALL createMovie (?,?,?,?,?,?,?) }";
     private static final String UPDATE_MOVIE = "{ CALL updateMovie (?,?,?,?,?,?,?) }";
@@ -66,6 +68,9 @@ public class SqlRepository implements Repository {
 
     private static final String CREATE_USER = "{ CALL createUser (?,?,?,?) }";
     private static final String SELECT_USER = "{ CALL selectUser (?,?) }";
+
+    private static final String DELETE_ALL_DATA = "{ CALL deleteAllData }";
+    private static final String DELETE_DUPLICATE_MOVIES = "{ CALL deleteDuplicateMovies }";
 
     @Override
     public int createPerson(Person person) throws Exception {
@@ -214,7 +219,22 @@ public class SqlRepository implements Repository {
 
     @Override
     public void createMovies(List<Movie> movies) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        DataSource dataSource = DataSourceSingleton.getInstance();
+        try (Connection con = dataSource.getConnection(); CallableStatement stmt = con.prepareCall(CREATE_MOVIE);) {
+
+            for (Movie movie : movies) {
+                stmt.setString(TITLE, movie.getTitle());
+                stmt.setString(PUBLISHED_DATE, movie.getPublishedDate()
+                        .format(Movie.DATE_FORMATTER));
+                stmt.setString(DESCRIPTION, movie.getDescription());
+                stmt.setString(PICTURE_PATH, movie.getPicturePath());
+                stmt.setInt(DURATION, movie.getDuration());
+                stmt.setInt(YEAR, movie.getYear());
+
+                stmt.registerOutParameter(ID_MOVIE, Types.INTEGER);
+                stmt.executeUpdate();
+            }
+        }
     }
 
     @Override
@@ -236,7 +256,12 @@ public class SqlRepository implements Repository {
 
     @Override
     public void deleteMovie(int id) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        DataSource dataSource = DataSourceSingleton.getInstance();
+        try (Connection con = dataSource.getConnection(); CallableStatement stmt = con.prepareCall(DELETE_MOVIE);) {
+
+            stmt.setInt(ID_MOVIE, id);
+            stmt.executeUpdate();
+        }
     }
 
     @Override
@@ -290,6 +315,22 @@ public class SqlRepository implements Repository {
     }
 
     @Override
+    public int createPersonInMovie(int movieId, int personId, Person person) throws Exception {
+        DataSource dataSource = DataSourceSingleton.getInstance();
+        try (Connection con = dataSource.getConnection(); CallableStatement stmt = con.prepareCall(CREATE_PERSON_IN_MOVIE);) {
+
+            stmt.setInt(FK_PERSON_ID, personId);
+            stmt.setInt(FK_MOVIE_ID, movieId);
+            stmt.setString(ROLE_IN_MOVIE, person.getRole().name());
+
+            stmt.registerOutParameter(ID_PERSON_MOVIE, Types.INTEGER);
+            stmt.executeUpdate();
+            
+            return stmt.getInt(ID_PERSON_MOVIE);
+        }
+    }
+
+    @Override
     public void createPeopleInMovie(int createdMovieId, Set<Person> people) throws Exception {
         DataSource dataSource = DataSourceSingleton.getInstance();
         try (Connection con = dataSource.getConnection(); CallableStatement stmt = con.prepareCall(CREATE_PERSON_IN_MOVIE);) {
@@ -327,7 +368,38 @@ public class SqlRepository implements Repository {
         }
         return peopleInMovie;
     }
+
+    @Override
+    public Optional<Integer> findPerson(Person person) throws Exception {
+        DataSource dataSource = DataSourceSingleton.getInstance();
+        try (Connection con = dataSource.getConnection(); CallableStatement stmt = con.prepareCall(FIND_PERSON);) {
+            stmt.setString(NAME, person.getName());
+            stmt.setString(ROLE, person.getRole().name());
+
+            try (ResultSet rs = stmt.executeQuery();) {
+                if (rs.next()) {
+                    return Optional.ofNullable(rs.getInt(ID_PERSON));
+                }
+            }
+        }
+        return Optional.empty();
+    }
     
+    @Override
+    public Optional<Integer> findMovie(String title) throws Exception {
+        DataSource dataSource = DataSourceSingleton.getInstance();
+        try (Connection con = dataSource.getConnection(); CallableStatement stmt = con.prepareCall(FIND_MOVIE);) {
+            stmt.setString(TITLE, title);         
+
+            try (ResultSet rs = stmt.executeQuery();) {
+                if (rs.next()) {
+                    return Optional.ofNullable(rs.getInt(ID_PERSON));
+                }
+            }
+        }
+        return Optional.empty();
+    }
+
     @Override
     public void deletePeopleInMovie(int id) throws Exception {
         DataSource dataSource = DataSourceSingleton.getInstance();
@@ -372,6 +444,22 @@ public class SqlRepository implements Repository {
 
         }
         return Optional.empty();
-    }   
+    }
+
+    @Override
+    public void deleteAllData() throws Exception {
+        DataSource dataSource = DataSourceSingleton.getInstance();
+        try (Connection con = dataSource.getConnection(); CallableStatement stmt = con.prepareCall(DELETE_ALL_DATA);) {
+            stmt.executeUpdate();
+        }
+    }
+
+    @Override
+    public void deleteDuplicateMovies() throws Exception {
+        DataSource dataSource = DataSourceSingleton.getInstance();
+        try (Connection con = dataSource.getConnection(); CallableStatement stmt = con.prepareCall(DELETE_DUPLICATE_MOVIES);) {
+            stmt.executeUpdate();
+        }
+    }
 
 }

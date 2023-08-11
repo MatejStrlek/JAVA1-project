@@ -163,6 +163,8 @@ public class CRUDMoviesPanel extends javax.swing.JPanel {
             }
         });
 
+        btnAddMovie.setBackground(new java.awt.Color(0, 204, 0));
+        btnAddMovie.setForeground(new java.awt.Color(255, 255, 255));
         btnAddMovie.setText("Add");
         btnAddMovie.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -173,7 +175,14 @@ public class CRUDMoviesPanel extends javax.swing.JPanel {
         btnDeleteMovie.setBackground(new java.awt.Color(255, 0, 0));
         btnDeleteMovie.setForeground(new java.awt.Color(255, 255, 255));
         btnDeleteMovie.setText("Delete");
+        btnDeleteMovie.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteMovieActionPerformed(evt);
+            }
+        });
 
+        btnClearAll.setBackground(new java.awt.Color(255, 255, 255));
+        btnClearAll.setForeground(new java.awt.Color(0, 0, 0));
         btnClearAll.setText("Clear all");
         btnClearAll.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -204,6 +213,8 @@ public class CRUDMoviesPanel extends javax.swing.JPanel {
         });
         jScrollPane2.setViewportView(tbMovies);
 
+        btnUpdateMovie.setBackground(new java.awt.Color(51, 153, 255));
+        btnUpdateMovie.setForeground(new java.awt.Color(255, 255, 255));
         btnUpdateMovie.setText("Update");
         btnUpdateMovie.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -375,6 +386,7 @@ public class CRUDMoviesPanel extends javax.swing.JPanel {
 
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
         init();
+        clearForm();
     }//GEN-LAST:event_formComponentShown
 
     private void btnAddMovieActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddMovieActionPerformed
@@ -435,6 +447,33 @@ public class CRUDMoviesPanel extends javax.swing.JPanel {
             }
         }
     }//GEN-LAST:event_btnDeletePeopleInMovieActionPerformed
+
+    private void btnDeleteMovieActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteMovieActionPerformed
+        if (selectedMovie == null) {
+            MessageUtils.showInformationMessage(CRUD_MOVIES_PANEL, "Choose movie bro!");
+            return;
+        }
+
+        deleteMovies();
+    }//GEN-LAST:event_btnDeleteMovieActionPerformed
+
+    private void deleteMovies() {
+        if (MessageUtils.showConfirmDialog("Delete movie?", "Do you want to delete this movie?")) {
+            try {
+                if (selectedMovie.getPicturePath() != null) {
+                    Files.deleteIfExists(
+                            Paths.get(selectedMovie.getPicturePath()));
+                }
+                
+                repository.deletePeopleInMovie(selectedMovie.getId());
+                repository.deleteMovie(selectedMovie.getId());
+                movieTableModel.setMovies(repository.selectMovies());
+                clearForm();
+            } catch (Exception ex) {
+                Logger.getLogger(CRUDMoviesPanel.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
 
     private void clearPeople() {
         peopleModel.clear();
@@ -586,8 +625,7 @@ public class CRUDMoviesPanel extends javax.swing.JPanel {
         hideErrors();
         validationFields.forEach(e -> e.setText(""));
         lbImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/no_image.png")));
-        peopleModel.clear();
-        people.clear();
+        clearPeople();
         selectedMovie = null;
     }
 
@@ -801,7 +839,7 @@ public class CRUDMoviesPanel extends javax.swing.JPanel {
 
     private void updatePeopleInMovie() throws Exception {
         repository.deletePeopleInMovie(selectedMovie.getId());
-        repository.createPeopleInMovie(selectedMovie.getId(), people);   
+        repository.createPeopleInMovie(selectedMovie.getId(), people);
     }
 
     private class ExportActorsHandler extends TransferHandler {

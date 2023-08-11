@@ -16,18 +16,33 @@ public class Person implements Comparable<Person>{
     private int id;
     private String name;
     private Role role;
+    private int movieId;
 
     public Person() {
-    }
+    } 
 
     public Person(String name, Role role) {
         this.name = name;
         this.role = role;
     }
 
-    public Person(int id, String name, Role role) {
-        this(name, role);
+    public Person(int id, String name, Role role, int movieId) {
         this.id = id;
+        this.name = name;
+        this.role = role;
+        this.movieId = movieId;
+    }
+
+    public Person(String name, Role role, int movieId) {
+        this.name = name;
+        this.role = role;
+        this.movieId = movieId;
+    }
+
+    public Person(int id, String name, Role role) {
+        this.id = id;
+        this.name = name;
+        this.role = role;
     }
 
     public int getId() {
@@ -52,6 +67,14 @@ public class Person implements Comparable<Person>{
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getMovieId() {
+        return movieId;
+    }
+
+    public void setMovieId(int movieId) {
+        this.movieId = movieId;
     }
 
     @Override
