@@ -7,25 +7,15 @@ This repository contains a Java application for managing movie-related data, inc
 
 
 Key Features:
-
 User Roles: The application supports two roles, Administrator and User.
-
 Authentication: Users can log in using a secure login form, and new users can register as Users.
-
 Administrator Functionality: Administrators can delete all data from the database and upload new data using an RSS parser.
-
 RSS Parsing: The RSS parser fetches data from specified URLs, saves it to the database, and downloads images to a local directory.
-
 CRUD Operations: Users can view and update entities (e.g., Movies, Actors, Directors) using organized forms.
-
 Data Consistency: The application ensures consistent image management when entities are updated or deleted.
-
 UI Organization: Forms are well-organized using components like JTabbedPane and JMenu.
-
 Table-Based Display: JTable and AbstractTableModel are utilized for displaying entities.
-
 Drag and Drop: Drag and drop functionality is implemented for certain entity associations.
-
 XML Download: Data can be downloaded as XML using the JAXB library.
 
 
