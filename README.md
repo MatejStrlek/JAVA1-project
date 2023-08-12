@@ -7,6 +7,7 @@ This repository contains a Java application for managing movie-related data, inc
 
 
 Key Features:
+
 User Roles: The application supports two roles, Administrator and User.
 
 Authentication: Users can log in using a secure login form, and new users can register as Users.
