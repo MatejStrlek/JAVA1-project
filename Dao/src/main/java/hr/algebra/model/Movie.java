@@ -6,26 +6,70 @@ package hr.algebra.model;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Set;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 /**
  *
  * @author matej.galic
  */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(propOrder = {"id", "title", "publishedDate", "description",
+    "directors", "actors", "duration", "year", "picturePath"})
 public class Movie {
-    public static final DateTimeFormatter DATE_FORMATTER =
-            DateTimeFormatter.ISO_LOCAL_DATE_TIME;
-    
+
+    public static final DateTimeFormatter DATE_FORMATTER
+            = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+
     private int id;
+
+    @XmlElement(name = "title")
     private String title;
+
+    @XmlElement(name = "publisheddate")
+    @XmlJavaTypeAdapter(DateAdapter.class)
     private LocalDateTime publishedDate;
+
+    @XmlElement(name = "description")
     private String description;
+
+    @XmlElement(name = "picturepath")
     private String picturePath;
+
+    @XmlElement(name = "duration")
     private int duration;
+
+    @XmlElement(name = "year")
     private int year;
+
+    @XmlElementWrapper
+    @XmlElement(name = "actor")
+    private Set<Person> actors;
+
+    @XmlElementWrapper
+    @XmlElement(name = "director")
+    private Set<Person> directors;
 
     public Movie() {
     }
-    
+
+    public Movie(int id, String title, LocalDateTime publishedDate, String description, String picturePath, int duration, int year, Set<Person> actors, Set<Person> directors) {
+        this.id = id;
+        this.title = title;
+        this.publishedDate = publishedDate;
+        this.description = description;
+        this.picturePath = picturePath;
+        this.duration = duration;
+        this.year = year;
+        this.actors = actors;
+        this.directors = directors;
+    }   
+
     public Movie(String title, LocalDateTime publishedDate, String description, String picturePath, int duration, int year) {
         this.title = title;
         this.publishedDate = publishedDate;
@@ -37,9 +81,9 @@ public class Movie {
 
     public Movie(int id, String title, LocalDateTime publishedDate, String description, String picturePath, int duration, int year) {
         this(title, publishedDate, description, picturePath, duration, year);
-        this.id = id;      
+        this.id = id;
     }
-    
+
     public int getId() {
         return id;
     }
@@ -55,7 +99,7 @@ public class Movie {
     public void setTitle(String title) {
         this.title = title;
     }
-    
+
     public LocalDateTime getPublishedDate() {
         return publishedDate;
     }

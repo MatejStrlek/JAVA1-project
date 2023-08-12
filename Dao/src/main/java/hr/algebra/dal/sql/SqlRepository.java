@@ -460,6 +460,6 @@ public class SqlRepository implements Repository {
         try (Connection con = dataSource.getConnection(); CallableStatement stmt = con.prepareCall(DELETE_DUPLICATE_MOVIES);) {
             stmt.executeUpdate();
         }
-    }
+    }   
 
 }

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<moviearchive>
+    <movies>
+        <movie>
+            <id>6</id>
+            <title>Meg 2: Put u dubinu</title>
+            <publisheddate>2023-08-11T22:00:00</publisheddate>
+            <description>Nastavak filma iz 2018. godine. Jason Statham i njegov tim vraćaju se u daljnje istraživanje Marijanske brazde gdje će se suočiti s novim, još većim zastrašujućim stvorenjima. Zaronite u neistražene vode s Jasonom Stathamom i globalnom akcijskom ikonom Wu Jingom dok vode odvažni istraživački tim ronioca u najveće dubine oceana. Njihovo putovanje ubrzo postaje kaos kada zlonamjerna rudarska kompanija zaprijeti njihovoj misiji i natjera ih na bitku za preživljavanje s visokim ulozima. Suprotstavljeni kolosalnim morskim psima megalodonima s jedne strane, te nemilosrdnim otimačima s druge, naši heroji moraju nadmudriti te nemilosrdne predatore u utrci s vremenom.</description>
+            <directors>
+                <director id="35">
+                    <name>Ben Wheatley</name>
+                    <role>DIRECTOR</role>
+                </director>
+            </directors>
+            <actors>
+                <actor id="37">
+                    <name> Cliff Curtis</name>
+                    <role>ACTOR</role>
+                </actor>
+                <actor id="36">
+                    <name>Jason Statham</name>
+                    <role>ACTOR</role>
+                </actor>
+                <actor id="38">
+                    <name> Sienna Guillory</name>
+                    <role>ACTOR</role>
+                </actor>
+            </actors>
+            <duration>116</duration>
+            <year>2023</year>
+            <picturepath>assets\da2e3793-2b2c-44cf-a4cd-0aca04659107.jpg</picturepath>
+        </movie>
+    </movies>
+</moviearchive>

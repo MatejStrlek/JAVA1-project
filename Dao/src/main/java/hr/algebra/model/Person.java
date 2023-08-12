@@ -6,16 +6,30 @@ package hr.algebra.model;
 
 import hr.algebra.enums.Role;
 import java.util.Objects;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author matej.galic
  */
+
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Person implements Comparable<Person>{
 
+    @XmlAttribute
     private int id;
+    
+    @XmlElement(name = "name")
     private String name;
+    
+    @XmlElement(name = "role")
     private Role role;
+    
+    @XmlTransient
     private int movieId;
 
     public Person() {
