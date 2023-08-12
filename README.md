@@ -30,7 +30,3 @@ Clone the repository.
 Set up the SQL Server and run the initialization DDL script to create tables.
 Run the application and log in as an Administrator or User.
 Explore the CRUD forms, use the RSS parser for updates, and manage entities and images.
-
-
-Contributions:
-Contributions are welcome! If you find any issues or have suggestions for improvements, feel free to create a pull request.
