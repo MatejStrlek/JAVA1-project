@@ -89,7 +89,7 @@ public class MovieParser {
                     case XMLStreamConstants.CHARACTERS -> {
                         if (tagType.isPresent() && movie != null) {
                             String data = event.asCharacters().getData().trim();
-                            start:
+
                             switch (tagType.get()) {
                                 case TITLE:
                                     if (!data.isEmpty()) {
@@ -109,10 +109,13 @@ public class MovieParser {
                                 case DESCRIPTION:
                                     if (!data.isEmpty()) {
                                         org.jsoup.nodes.Document doc = Jsoup.parse(data);
-                                        org.jsoup.nodes.Element descriptionElement = doc.selectFirst("div");
+                                        org.jsoup.nodes.Element descriptionElement = doc.selectFirst(DIV);
                                         if (descriptionElement != null) {
                                             String description = descriptionElement.ownText();
                                             movie.setDescription(description);
+                                        }
+                                        else{
+                                            movie.setDescription(data);
                                         }
                                     }
                                     break;

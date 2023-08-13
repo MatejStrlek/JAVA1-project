@@ -138,8 +138,8 @@ public class CinemaManager extends javax.swing.JFrame implements LoginCallBack{
         loadRequiredPanels(0);
     }
 
-    private void loadRequiredPanels(int x) {
-        for (int i = 1; i < tpContent.getTabCount() - x; i++) {
+    private void loadRequiredPanels(int lastPanel) {
+        for (int i = 1; i < tpContent.getTabCount() - lastPanel; i++) {
             tpContent.setEnabledAt(i, true);
         }
         

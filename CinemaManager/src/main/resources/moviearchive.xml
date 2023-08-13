@@ -2,33 +2,67 @@
 <moviearchive>
     <movies>
         <movie>
-            <id>6</id>
-            <title>Meg 2: Put u dubinu</title>
-            <publisheddate>2023-08-11T22:00:00</publisheddate>
-            <description>Nastavak filma iz 2018. godine. Jason Statham i njegov tim vraćaju se u daljnje istraživanje Marijanske brazde gdje će se suočiti s novim, još većim zastrašujućim stvorenjima. Zaronite u neistražene vode s Jasonom Stathamom i globalnom akcijskom ikonom Wu Jingom dok vode odvažni istraživački tim ronioca u najveće dubine oceana. Njihovo putovanje ubrzo postaje kaos kada zlonamjerna rudarska kompanija zaprijeti njihovoj misiji i natjera ih na bitku za preživljavanje s visokim ulozima. Suprotstavljeni kolosalnim morskim psima megalodonima s jedne strane, te nemilosrdnim otimačima s druge, naši heroji moraju nadmudriti te nemilosrdne predatore u utrci s vremenom.</description>
+            <id>3</id>
+            <title>Dvorac straha</title>
+            <publisheddate>2023-08-12T22:00:00</publisheddate>
+            <description>&lt;img src="https://www.blitz-cinestar-bh.ba/resize.aspx?filename=Plakats/17.5.2023_14_14_34_Haunted_Mansion_HR_novi.jpg&amp;amp;width=100" hspace="3" vspace="3" align="left"&gt;Fantastičnu zvjezdanu ekipu filma predvode Rosario Dawson, Tiffany Haddish, Owen Wilson, Danny DeVito, Jamie Lee Curtis i Jared Leto!
+U ovoj misterioznoj porodičnoj avanturi temeljenoj na klasičnoj Disneyevoj atrakciji iz tematskih parkova, liječnica i njezin 9-godišnji sin, koji žele započeti novi život, useljavaju se u neobično pristupačnu vilu u New Orleansu. Ubrzo otkrivaju da je to mjesto puno više nego što su očekivali. Očajnički tražeći pomoć oni angažiraju šaroliku ekipu takozvanih duhovnih stručnjaka kako bi im pomogli osloboditi dom od nadnaravnih skvotera.
+&lt;br /&gt;&lt;a href='https://karte.cinestarcinemas.ba/webticketnet/performance.aspx?oid=2A851000023PBWJEQC&amp;coid=40000000014AKFBLFD'&gt;14.00&lt;/a&gt;, &lt;a href='https://kar</description>
             <directors>
                 <director id="35">
                     <name>Ben Wheatley</name>
                     <role>DIRECTOR</role>
                 </director>
+                <director id="9">
+                    <name>Justin Simien</name>
+                    <role>DIRECTOR</role>
+                </director>
             </directors>
             <actors>
-                <actor id="37">
-                    <name> Cliff Curtis</name>
+                <actor id="16">
+                    <name> Dan Levy</name>
                     <role>ACTOR</role>
                 </actor>
-                <actor id="36">
-                    <name>Jason Statham</name>
+                <actor id="7">
+                    <name> Helen Mirren</name>
                     <role>ACTOR</role>
                 </actor>
-                <actor id="38">
-                    <name> Sienna Guillory</name>
+                <actor id="12">
+                    <name> Owen Wilson</name>
+                    <role>ACTOR</role>
+                </actor>
+                <actor id="10">
+                    <name>LaKeith Stanfield</name>
+                    <role>ACTOR</role>
+                </actor>
+                <actor id="14">
+                    <name> Rosario Dawson</name>
+                    <role>ACTOR</role>
+                </actor>
+                <actor id="17">
+                    <name> Jamie Lee Curtis</name>
+                    <role>ACTOR</role>
+                </actor>
+                <actor id="18">
+                    <name> Jared Leto</name>
+                    <role>ACTOR</role>
+                </actor>
+                <actor id="15">
+                    <name> Chase W. Dillon</name>
+                    <role>ACTOR</role>
+                </actor>
+                <actor id="13">
+                    <name> Danny DeVito</name>
+                    <role>ACTOR</role>
+                </actor>
+                <actor id="11">
+                    <name> Tiffany Haddish</name>
                     <role>ACTOR</role>
                 </actor>
             </actors>
-            <duration>116</duration>
+            <duration>125</duration>
             <year>2023</year>
-            <picturepath>assets\da2e3793-2b2c-44cf-a4cd-0aca04659107.jpg</picturepath>
+            <picturepath>assets\fb7bb8c8-7760-4689-b515-4c3b19ef3de4.jpg</picturepath>
         </movie>
     </movies>
 </moviearchive>

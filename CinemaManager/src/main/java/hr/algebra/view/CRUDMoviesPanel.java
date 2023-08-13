@@ -50,13 +50,13 @@ public class CRUDMoviesPanel extends javax.swing.JPanel {
     private static final String CRUD_MOVIES_PANEL = "Movies panel";
 
     private static final String FILENAME = "src/main/resources/moviearchive.xml";
-    private final List<Movie> movies = new ArrayList<>();
+    private List<Movie> movies = new ArrayList<>();
     private Set<Person> movieActors = new HashSet<>();
     private Set<Person> movieDirectors = new HashSet<>();
     private Set<Person> peopleInMovie = new HashSet<>();
 
     private static final String ACTOR = "ACTOR";
-    private static final String DIRECTOR = "DIRECTOR";
+
     /**
      * Creates new form EditMoviesPanel
      */
@@ -456,19 +456,17 @@ public class CRUDMoviesPanel extends javax.swing.JPanel {
     private void btnDeletePeopleInMovieActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeletePeopleInMovieActionPerformed
         if (peopleModel.getSize() == 0) {
             return;
-        } else {
-            try {
-                if (!repository.selectPeopleInMovie(selectedMovie.getId()).isEmpty()) {
-                    repository.deletePeopleInMovie(selectedMovie.getId());
-                    clearPeople();
-                } else {
-                    clearPeople();
-                }
-            } catch (Exception ex) {
-                Logger.getLogger(CRUDMoviesPanel.class.getName()).log(Level.SEVERE, null, ex);
-                MessageUtils.showInformationMessage(CRUD_MOVIES_PANEL, ex.getMessage());
-            }
         }
+        try {
+            if (selectedMovie != null && !repository.selectPeopleInMovie(selectedMovie.getId()).isEmpty()) {
+                repository.deletePeopleInMovie(selectedMovie.getId());
+            }
+            clearPeople();
+        } catch (Exception ex) {
+            Logger.getLogger(CRUDMoviesPanel.class.getName()).log(Level.SEVERE, null, ex);
+            MessageUtils.showInformationMessage(CRUD_MOVIES_PANEL, ex.getMessage());
+        }
+
     }//GEN-LAST:event_btnDeletePeopleInMovieActionPerformed
 
     private void btnDeleteMovieActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteMovieActionPerformed
@@ -486,12 +484,11 @@ public class CRUDMoviesPanel extends javax.swing.JPanel {
         } catch (Exception ex) {
             Logger.getLogger(CRUDMoviesPanel.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         for (Person person : peopleInMovie) {
             if (person.getRole().name().equals(ACTOR)) {
                 movieActors.add(person);
-            }
-            else{
+            } else {
                 movieDirectors.add(person);
             }
         }
