@@ -461,6 +461,7 @@ public class CRUDMoviesPanel extends javax.swing.JPanel {
             if (selectedMovie != null && !repository.selectPeopleInMovie(selectedMovie.getId()).isEmpty()) {
                 repository.deletePeopleInMovie(selectedMovie.getId());
             }
+            
             clearPeople();
         } catch (Exception ex) {
             Logger.getLogger(CRUDMoviesPanel.class.getName()).log(Level.SEVERE, null, ex);
