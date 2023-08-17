@@ -72,6 +72,9 @@ public class SqlRepository implements Repository {
     private static final String DELETE_ALL_DATA = "{ CALL deleteAllData }";
     private static final String DELETE_DUPLICATE_MOVIES = "{ CALL deleteDuplicateMovies }";
 
+    private static final String MAX_MOVIE_ID = "{ ? = call maxMovieId }";
+    private static final String MAX_PERSON_ID = "{ ? = call maxPersonId }";
+
     @Override
     public int createPerson(Person person) throws Exception {
         DataSource dataSource = DataSourceSingleton.getInstance();
@@ -325,7 +328,7 @@ public class SqlRepository implements Repository {
 
             stmt.registerOutParameter(ID_PERSON_MOVIE, Types.INTEGER);
             stmt.executeUpdate();
-            
+
             return stmt.getInt(ID_PERSON_MOVIE);
         }
     }
@@ -384,16 +387,16 @@ public class SqlRepository implements Repository {
         }
         return Optional.empty();
     }
-    
+
     @Override
     public Optional<Integer> findMovie(String title) throws Exception {
         DataSource dataSource = DataSourceSingleton.getInstance();
         try (Connection con = dataSource.getConnection(); CallableStatement stmt = con.prepareCall(FIND_MOVIE);) {
-            stmt.setString(TITLE, title);         
+            stmt.setString(TITLE, title);
 
             try (ResultSet rs = stmt.executeQuery();) {
                 if (rs.next()) {
-                    return Optional.ofNullable(rs.getInt(ID_PERSON));
+                    return Optional.ofNullable(rs.getInt(ID_MOVIE));
                 }
             }
         }
@@ -460,6 +463,40 @@ public class SqlRepository implements Repository {
         try (Connection con = dataSource.getConnection(); CallableStatement stmt = con.prepareCall(DELETE_DUPLICATE_MOVIES);) {
             stmt.executeUpdate();
         }
-    }   
+    }
+
+    @Override
+    public Optional<Integer> maxMovieId() throws Exception {
+        DataSource dataSource = DataSourceSingleton.getInstance();
+        try (Connection con = dataSource.getConnection(); CallableStatement stmt = con.prepareCall(MAX_MOVIE_ID);) {
+
+            stmt.registerOutParameter(1, Types.INTEGER);
+            stmt.execute();
+
+            int result = stmt.getInt(1);
+
+            if (!stmt.wasNull()) {
+                return Optional.of(result);
+            }
+        }
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<Integer> maxPersonId() throws Exception {
+        DataSource dataSource = DataSourceSingleton.getInstance();
+        try (Connection con = dataSource.getConnection(); CallableStatement stmt = con.prepareCall(MAX_PERSON_ID);) {
+
+            stmt.registerOutParameter(1, Types.INTEGER);
+            stmt.execute();
+
+            int result = stmt.getInt(1);
+
+            if (!stmt.wasNull()) {
+                return Optional.of(result);
+            }
+        }
+        return Optional.empty();
+    }
 
 }

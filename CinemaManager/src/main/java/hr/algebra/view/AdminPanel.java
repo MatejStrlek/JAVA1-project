@@ -12,6 +12,7 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -92,7 +93,10 @@ public class AdminPanel extends javax.swing.JPanel {
 
     private void btnUploadMoviesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUploadMoviesActionPerformed
         try {
-            MovieParser.parse();
+            int maxMovieId = repository.maxMovieId().orElse(0);
+            int maxPersonId = repository.maxPersonId().orElse(0);
+
+            MovieParser.parse(maxMovieId, maxPersonId);
         } catch (Exception ex) {
             Logger.getLogger(AdminPanel.class.getName()).log(Level.SEVERE, null, ex);
             MessageUtils.showErrorMessage(ADMIN_PANEL, "Cannot upload movies!");

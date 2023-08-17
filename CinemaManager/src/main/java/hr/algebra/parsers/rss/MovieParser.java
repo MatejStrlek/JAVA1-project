@@ -49,12 +49,12 @@ public class MovieParser {
     private MovieParser() {
     }
 
-    public static void parse() throws IOException, XMLStreamException, Exception {
+    public static void parse(int maxMovieId, int maxPersonId) throws IOException, XMLStreamException, Exception {
         List<Movie> movies = new ArrayList<>();
         List<Person> people = new ArrayList<>();
 
-        int movieID = 1;
-        int personId = 1;
+        int movieID = maxMovieId == 0 ? 1 : maxMovieId;
+        int personId = maxPersonId == 0 ? 1 : maxPersonId;
 
         repository = RepositoryFactory.getRepository();
 
@@ -81,7 +81,6 @@ public class MovieParser {
                         if (tagType.isPresent() && tagType.get().equals(TagType.ITEM)) {
                             movie = new Movie();
                             movies.add(movie);
-
                             movie.setId(movieID);
                             movieID++;
                         }
@@ -113,8 +112,7 @@ public class MovieParser {
                                         if (descriptionElement != null) {
                                             String description = descriptionElement.ownText();
                                             movie.setDescription(description);
-                                        }
-                                        else{
+                                        } else {
                                             movie.setDescription(data);
                                         }
                                     }
@@ -190,10 +188,10 @@ public class MovieParser {
                 }
             }
         }
-        
+
         repository.createMovies(movies);
         repository.deleteDuplicateMovies();
-        
+
         for (Person person : people) {
             repository.createPersonInMovie(person.getMovieId(), person.getId(), person);
         }

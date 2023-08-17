@@ -46,6 +46,9 @@ public interface Repository {
     Optional<Integer> findPerson(Person person) throws Exception;
     Optional<Integer> findMovie(String title) throws Exception;
 
-    public void deleteDuplicateMovies() throws Exception;   
+    void deleteDuplicateMovies() throws Exception;   
+    
+    Optional<Integer> maxMovieId() throws Exception;
+    Optional<Integer> maxPersonId() throws Exception;
     
 }

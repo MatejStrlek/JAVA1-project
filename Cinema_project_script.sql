@@ -337,3 +337,18 @@ BEGIN
 		AND m1.IDMovie > m2.IDMovie;	
 END
 GO
+
+
+CREATE PROCEDURE maxMovieId
+AS
+BEGIN
+	SELECT MAX(IDMovie) FROM Movie;
+END
+GO
+
+CREATE PROCEDURE maxPersonId
+AS
+BEGIN
+	SELECT MAX(IDPerson) FROM Person;
+END
+GO
