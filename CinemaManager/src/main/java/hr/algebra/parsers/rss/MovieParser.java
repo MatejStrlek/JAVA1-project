@@ -60,6 +60,8 @@ public class MovieParser {
 
         HttpURLConnection con = UrlConnectionFactory
                 .getHttpUrlConnection(RSS_URL);
+        
+        repository.deleteAllData();
 
         try (InputStream is = con.getInputStream();) {
             XMLEventReader reader = ParserFactory.createStaxParser(is);
